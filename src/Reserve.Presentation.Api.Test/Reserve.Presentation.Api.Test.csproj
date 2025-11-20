@@ -15,4 +15,8 @@
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Reserve.Presentation.Api\Reserve.Presentation.Api.csproj" />
+  </ItemGroup>
+
 </Project>
