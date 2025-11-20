@@ -6,7 +6,7 @@ namespace Reserve.Core.Test.Entities;
 [TestClass]
 public class ResourceShouldContext
 {
-    private Reserve.Core.Entities.Resource resource;
+    private Reserve.Core.Entities.Resource? resource = null;
 
     public ResourceShouldContext WhenCreateResourceInstance(
         Guid id,

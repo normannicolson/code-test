@@ -128,6 +128,22 @@ http://localhost:5140/openapi/v1.json
 
 http://localhost:5140/swagger/index.html
 
+Create Entities 
+
+```mermaid
+
+erDiagram
+
+Schedule ||--|{ Resource : "Rooms"
+
+Schedule ||--o{ Slot : "Slots/nights"
+
+Booking ||--|{ Slot : "Booking slots timespan"
+
+Booking ||--|{ Resource : "Booking rooms"
+
+```
+
 ## Design 
 
 ### Using Fhir as a starting point
