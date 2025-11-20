@@ -19,10 +19,13 @@ hours but feel free to spend as long or as short as you like on this.
 
 Create a hotel room booking API using ASP.NET Core and Entity Framework (EF) Core,
 your solution must be written in C# following RESTful principles.
+
 The solution should be committed to an online repository and access shared with us. If
 you have any supporting documentation, please include this in the repository.
+
 If possible, it should be hosted in an Azure environment (free trials are available),
 please note this is not a critical requirement.
+
 Use the database of your choosing.
 
 ### Business Rules
@@ -71,9 +74,73 @@ dotnet test Reserve.Core.Test
 mkdir src
 cd src
 dotnet new classlib -n Reserve.Core
-
 dotnet new mstest -n Reserve.Core.Test
 ```
 
 Create Entities classes and starter tests 
 
+Create Api 
+
+```
+dotnet new web -n Reserve.Presentation.Api
+dotnet new mstest -n Reserve.Presentation.Api.Test 
+```
+
+Run app
+
+```
+dotnet run --project Reserve.Presentation.Api 
+```
+
+Request root
+
+```
+curl -i -X GET localhost:5140
+```
+
+## Design 
+
+### Using Fhir as a starting point
+
+Resource - This is normally a HealthcareService, Practitioner, Location or Device. In the case where a single resource can provide different services, potentially at different location, then the schedulable resource is considered the composite of the actors. 
+
+Schedule - A container for slots of time that may be available for booking appointments. A schedule controls the dates and times available for the performance of a service and/or the use of a resource.
+
+Slot - A slot of time on a schedule that may be available for booking appointments.
+
+Booking/Appointment - A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time.
+
+Resource
+https://build.fhir.org/location.html
+https://build.fhir.org/device.html
+
+Schedule
+https://build.fhir.org/schedule.html
+https://build.fhir.org/schedule-definitions.html#Schedule.actor
+
+Slot 
+https://build.fhir.org/slot.html
+
+Appointment
+https://build.fhir.org/appointment.html
+
+Workflow 
+https://build.fhir.org/workflow-module.html
+
+### Data Model
+
+```mermaid
+
+erDiagram
+
+Resource ||--o{ Resource : "Parent resource"
+
+Schedule ||--|{ Resource : "Resources"
+
+Schedule ||--o{ Slot : "Slots"
+
+Booking ||--|{ Slot : "Booking slots timespan"
+
+Booking ||--|{ Resource : "Booking resource products"
+
+```
