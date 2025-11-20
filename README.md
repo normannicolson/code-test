@@ -20,8 +20,9 @@ hours but feel free to spend as long or as short as you like on this.
 Create a hotel room booking API using ASP.NET Core and Entity Framework (EF) Core,
 your solution must be written in C# following RESTful principles.
 
-The solution should be committed to an online repository and access shared with us. If
-you have any supporting documentation, please include this in the repository.
+The solution should be committed to an online repository and access shared with us. 
+
+If you have any supporting documentation, please include this in the repository.
 
 If possible, it should be hosted in an Azure environment (free trials are available),
 please note this is not a critical requirement.
@@ -112,6 +113,20 @@ dotnet new classlib -n Reserve.Application
 dotnet new mstest -n Reserve.Application.Test
 ```
 
+Add OpenApi & Swagger to ```Reserve.Presentation.Api``` project 
+
+```
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
+  </ItemGroup>
+```
+
+Launch endpoints 
+
+http://localhost:5140/openapi/v1.json
+
+http://localhost:5140/swagger/index.html
 
 ## Design 
 
