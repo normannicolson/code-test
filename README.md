@@ -98,6 +98,21 @@ Request root
 curl -i -X GET localhost:5140
 ```
 
+Create Data project 
+
+```
+dotnet new classlib -n Reserve.Infrastructure.Data
+dotnet new mstest -n Reserve.Infrastructure.Data.Test
+```
+
+Create Application project
+
+```
+dotnet new classlib -n Reserve.Application
+dotnet new mstest -n Reserve.Application.Test
+```
+
+
 ## Design 
 
 ### Using Fhir as a starting point
