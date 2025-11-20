@@ -57,3 +57,23 @@ Your solution must allow an API consumer to perform the following:
     - Consideration could be given to automated testing but is not essential to
     the deliverable.
 - The API requires no authentication.
+
+### Run tests 
+
+from ```src``` folder
+```
+dotnet test Reserve.Core.Test
+```
+
+### Steps taken  
+
+```
+mkdir src
+cd src
+dotnet new classlib -n Reserve.Core
+
+dotnet new mstest -n Reserve.Core.Test
+```
+
+Create Entities classes and starter tests 
+
