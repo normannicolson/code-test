@@ -122,9 +122,10 @@ Seeding
 
 curl -i -X POST http://localhost:5140/data/seed
 
-Reset
+Reset 
 
 curl -i -X POST http://localhost:5140/data/reset
+
 
 ### Run tests 
 
