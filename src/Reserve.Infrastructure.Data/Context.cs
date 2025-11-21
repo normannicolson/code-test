@@ -22,7 +22,6 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
 
     public virtual DbSet<BookingSlot> BookingSlots { get; set; }
 
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);

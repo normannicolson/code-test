@@ -30,6 +30,7 @@ please note this is not a critical requirement.
 Use the database of your choosing.
 
 ### Business Rules
+
 - Hotels have 3 room types: single, double, deluxe.
 - Hotels have 6 rooms.
 - A room cannot be double booked for any given night.
@@ -44,6 +45,7 @@ given time.
 The system should provide the following functionality through a well designed API.
 
 #### Business Functionality
+
 Your solution must allow an API consumer to perform the following:
 
 - Find a hotel based on its name.
@@ -52,6 +54,7 @@ Your solution must allow an API consumer to perform the following:
 - Find booking details based on a booking reference.
 
 ### Technical Requirements
+
 - The API must be testable.
     - OpenAPI / Swagger documentation should be made available for testing.
     - For testing purposes the API should expose functionality to allow for
@@ -62,14 +65,60 @@ Your solution must allow an API consumer to perform the following:
     the deliverable.
 - The API requires no authentication.
 
+## Run Application 
+
+from ```src``` folder
+
+```
+dotnet run --project Reserve.Presentation.Api
+```
+
+```
+curl -i -X GET http://localhost:5140
+```
+
+Get Booking
+
+```
+curl -i -X GET http://localhost:5140/bookings/00000000-0000-0000-0000-000000000000
+```
+
+Response 
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Fri, 21 Nov 2025 15:36:56 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"id":"bc32c120-0b06-47fb-88fb-61a6742ada1e","name":"Booking Name"}%     
+```
+
+Open API Swagger APIs 
+
+http://localhost:5140/openapi/v1.json
+
+http://localhost:5140/swagger/index.html
+
 ### Run tests 
 
 from ```src``` folder
+
 ```
 dotnet test Reserve.Core.Test
+dotnet test Reserve.Application.Test
+dotnet test Reserve.Infrastructure.Data.Test
 ```
 
-### Steps taken  
+or from repo root 
+
+```
+dotnet test
+```
+
+## How Application was created 
+
+### Steps 
 
 ```
 mkdir src
@@ -85,18 +134,6 @@ Create Api
 ```
 dotnet new web -n Reserve.Presentation.Api
 dotnet new mstest -n Reserve.Presentation.Api.Test 
-```
-
-Run app
-
-```
-dotnet run --project Reserve.Presentation.Api 
-```
-
-Request root
-
-```
-curl -i -X GET localhost:5140
 ```
 
 Create Data project 
@@ -122,13 +159,24 @@ Add OpenApi & Swagger to ```Reserve.Presentation.Api``` project
   </ItemGroup>
 ```
 
-Launch endpoints 
+### Data structure 
 
-http://localhost:5140/openapi/v1.json
+Class Diagram 
 
-http://localhost:5140/swagger/index.html
+```mermaid
+
+classDiagram
+
+Schedule --> Resource  
+Schedule --> Slot 
+
+Booking --> Resource  
+Booking --> Slot 
+```
 
 Create Entities 
+
+
 
 ```mermaid
 
@@ -161,6 +209,21 @@ erDiagram
 
   Booking ||--|{ BookingSlot : Slots
   Slot ||--o{ BookingSlot : Slots
+
+```
+
+### Create CQRS classes in Application project 
+
+
+### Implement Database 
+
+
+### Implement Api 
+
+
+### Create Database 
+
+```
 
 ```
 

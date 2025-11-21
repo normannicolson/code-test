@@ -1,8 +1,19 @@
 # Create Database 
 
+Create EF 
+
+dotnet ef database update --project Reserve.Infrastructure.Data --startup-project Reserve.Presentation.Api --context Context --verbose
+
 ```
 docker run --name sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=yourStrong!Passw0rd' -p 1433:1433 -v sqlvolume:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2025-latest
 ```
+
+Connection string 
+
+```
+Data Source=localhost,1433; Initial Catalog=Example;integrated security=false; MultipleActiveResultSets=True; User Id=sa; Password=yourStrong!Passw0rd;
+```
+
 
 ```
 DECLARE @room1 UNIQUEIDENTIFIER = 'd4ed1b54-6c29-4a94-9c8f-7f5a36f3d601';
