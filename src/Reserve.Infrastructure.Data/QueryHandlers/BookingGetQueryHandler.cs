@@ -7,9 +7,9 @@ namespace Reserve.Application.QueryHandlers;
 
 public sealed class BookingGetQueryHandler : IBookingGetQueryHandler
 {
-    Context dbContext;
+    IContext dbContext;
 
-    public BookingGetQueryHandler(Context dbContext)
+    public BookingGetQueryHandler(IContext dbContext)
     {
         this.dbContext = dbContext;
     }

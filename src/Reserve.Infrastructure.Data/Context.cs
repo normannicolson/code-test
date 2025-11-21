@@ -4,7 +4,7 @@ using Reserve.Infrastructure.Data.Entities;
 
 namespace Reserve.Infrastructure.Data;
 
-public class Context(DbContextOptions<Context> options) : DbContext(options)
+public class Context(DbContextOptions<Context> options) : DbContext(options), IContext
 {
     public virtual DbSet<Resource> Resources { get; set; }
 

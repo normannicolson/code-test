@@ -11,7 +11,7 @@ namespace Reserve.Infrastructure.Data;
 public static class ContextExtensions
 {
     public static async Task<IEnumerable<Resource>> FindAvailableResources(
-        this Context context,
+        this IContext context,
         DateTimeOffset start,
         DateTimeOffset end,
         CancellationToken cancellationToken = default)
@@ -30,8 +30,7 @@ public static class ContextExtensions
             .Where(r => !context.BookingResources
                 .Where(br => br.ResourceId == r.Id)
                 .Any(br => br.Booking.Start <= end && br.Booking.End >= start))
-            .Distinct()
-            .ToList();
+            .Distinct();
 
         return availableResources;
     }

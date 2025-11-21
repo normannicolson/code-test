@@ -13,7 +13,7 @@ public class ContextShouldContext
 {
     private Context Context { get; }
 
-    private IEnumerable<Resource> AvailableResources { get; set; } = null;
+    private IEnumerable<Resource>? AvailableResources { get; set; } = null;
 
     public ContextShouldContext()
     {
@@ -128,8 +128,8 @@ public class ContextShouldContext
         var scheduleResource = new Entities.ScheduleResource
         {
             Id = Guid.NewGuid(),
-            ScheduleId = schedule.Id,
-            ResourceId = resource.Id,
+            ScheduleId = schedule!.Id,
+            ResourceId = resource!.Id,
             Schedule = schedule,
             Resource = resource
         };
@@ -148,8 +148,8 @@ public class ContextShouldContext
         var scheduleSlot = new Entities.ScheduleSlot
         {
             Id = Guid.NewGuid(),
-            ScheduleId = schedule.Id,
-            SlotId = slot.Id,
+            ScheduleId = schedule!.Id,
+            SlotId = slot!.Id,
             Schedule = schedule,
             Slot = slot            
         };
@@ -184,8 +184,8 @@ public class ContextShouldContext
         var bookingResource = new Entities.BookingResource
         {
             Id = Guid.NewGuid(),
-            BookingId = booking.Id,
-            ResourceId = resource.Id,
+            BookingId = booking!.Id,
+            ResourceId = resource!.Id,
             Booking = booking,
             Resource = resource
         };
@@ -204,8 +204,8 @@ public class ContextShouldContext
         var bookingSlot = new Entities.BookingSlot
         {
             Id = Guid.NewGuid(),
-            BookingId = booking.Id,
-            SlotId = slot.Id,
+            BookingId = booking!.Id,
+            SlotId = slot!.Id,
             Booking = booking,
             Slot = slot
         };
@@ -225,6 +225,8 @@ public class ContextShouldContext
 
     public ContextShouldContext ThenAvailableResourceCount(int count)
     {
+        Assert.IsNotNull(this.AvailableResources);
+
         this.AvailableResources.Count()
             .Should().Be(count);
 

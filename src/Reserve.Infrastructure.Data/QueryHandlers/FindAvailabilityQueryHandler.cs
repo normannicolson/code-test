@@ -1,23 +1,31 @@
 using System.Threading.Tasks;
 using Reserve.Application.Queries;
 using Reserve.Core.Entities;
+using Reserve.Infrastructure.Data;
 
 namespace Reserve.Application.QueryHandlers;
 
-public sealed class FindAvailabilityQueryHandler
+public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
 {
-    public FindAvailabilityQueryHandler()
+    IContext dbContext;
+    
+    public FindAvailabilityQueryHandler(IContext dbContext)
     {
+        this.dbContext = dbContext;
     }
 
-    public async Task<ResourceDto> Handle(FindAvailabilityQuery query)
+    public async Task<IEnumerable<ResourceDto>> Handle(FindAvailabilityQuery query, CancellationToken token)
     {
-        var model = new ResourceDto
-        {
-            Id = Guid.NewGuid(),
-            Name = "Resource Name"
-        };
+        var availableResources = await dbContext.FindAvailableResources(query.Start, query.End, token);
 
-        return await Task.FromResult(model);
+        var resourceDtos = availableResources
+            .Select(r => new ResourceDto
+            {
+                Id = r.Id,
+                Name = r.Name
+            })
+            .ToList();
+
+        return await Task.FromResult(resourceDtos);
     }
 }

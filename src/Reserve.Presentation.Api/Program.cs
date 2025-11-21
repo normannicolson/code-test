@@ -11,9 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<Context>(options =>
+builder.Services.AddDbContext<IContext, Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReserveDatabase")));
 
+builder.Services.AddScoped<IFindAvailabilityQueryHandler, FindAvailabilityQueryHandler>();
 builder.Services.AddScoped<IBookingGetQueryHandler, BookingGetQueryHandler>();
 
 var app = builder.Build();
@@ -41,9 +42,18 @@ app.MapGet("/hotels/search", (string name) => {
 });
 
 // Find available rooms between two dates for a given number of people.
-app.MapGet("/rooms/search", () => {
+app.MapGet("/rooms/search", async (
+    [FromQuery]DateTime from,
+    [FromQuery]DateTime to,
+    [FromQuery]int numberOfPeople,
+    [FromServices] IFindAvailabilityQueryHandler handler,
+    CancellationToken cancellationToken) => {
 
-    return Results.Ok("Find available rooms between two dates for a given number of people.");
+    var query = new FindAvailabilityQuery(from, to);
+
+    var dto = await handler.Handle(query, cancellationToken);
+
+    return TypedResults.Ok(dto);
 });
 
 // Book a room.
@@ -56,13 +66,12 @@ app.MapPost("/bookings", () => {
 app.MapGet("/bookings/{id}", async (
     [FromRoute(Name = "id")] Guid id,
     [FromServices] IBookingGetQueryHandler handler,
-    CancellationToken cancellationToken) 
-    => {
-        var query = new BookingGetQuery(id);
+    CancellationToken cancellationToken) => {
+    var query = new BookingGetQuery(id);
 
-        var dto = await handler.Handle(query, cancellationToken);
+    var dto = await handler.Handle(query, cancellationToken);
 
-        return TypedResults.Ok(dto);
-    });
+    return TypedResults.Ok(dto);
+});
 
 app.Run();
