@@ -1,6 +1,6 @@
 using System;
 
-namespace Reserve.Application.Queries;
+namespace Reserve.Application.Commands;
 
 public sealed class AddResourceCommand
 {

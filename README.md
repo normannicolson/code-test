@@ -112,13 +112,19 @@ Both rooms available
 curl -X GET "http://localhost:5140/rooms/search?from=2026-06-06T15:00:00Z&to=2026-06-07T11:00:00Z&numberofpeople=2" | jq
 ```
 
-
-
 Open API Swagger APIs 
 
 http://localhost:5140/openapi/v1.json
 
 http://localhost:5140/swagger/index.html
+
+Seeding 
+
+curl -i -X POST http://localhost:5140/data/seed
+
+Reset
+
+curl -i -X POST http://localhost:5140/data/reset
 
 ### Run tests 
 

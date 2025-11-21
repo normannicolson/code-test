@@ -1,6 +1,6 @@
-using Reserve.Application.Queries;
+using Reserve.Application.Commands;
 
-namespace Reserve.Application.QueryHandlers;
+namespace Reserve.Application.CommandHandlers;
 
 public interface IAddResourceCommandHandler
 {
