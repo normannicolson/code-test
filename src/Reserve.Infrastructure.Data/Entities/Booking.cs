@@ -6,16 +6,16 @@ namespace Reserve.Infrastructure.Data.Entities;
 
 public class Booking
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
     [StringLength(256)]
     public string Name { get; set; }
 
-    public DateTimeOffset Start { get; set; }
+    public required DateTimeOffset Start { get; set; }
 
-    public DateTimeOffset End { get; set; }
+    public required DateTimeOffset End { get; set; }
 
-    public virtual BookingResource BookingResource { get; set; }
+    public virtual BookingResource? BookingResource { get; set; }
 
-    public virtual ICollection<BookingSlot> BookingSlots { get; set; }
+    public virtual ICollection<BookingSlot> BookingSlots { get; set; } = new List<BookingSlot>();
 }

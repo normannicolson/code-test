@@ -129,7 +129,9 @@ public class ContextShouldContext
         {
             Id = Guid.NewGuid(),
             ScheduleId = schedule.Id,
-            ResourceId = resource.Id
+            ResourceId = resource.Id,
+            Schedule = schedule,
+            Resource = resource
         };
 
         this.Context.ScheduleResources.Add(scheduleResource);
@@ -147,7 +149,9 @@ public class ContextShouldContext
         {
             Id = Guid.NewGuid(),
             ScheduleId = schedule.Id,
-            SlotId = slot.Id
+            SlotId = slot.Id,
+            Schedule = schedule,
+            Slot = slot            
         };
 
         this.Context.ScheduleSlots.Add(scheduleSlot);
@@ -163,7 +167,7 @@ public class ContextShouldContext
             Id = Guid.NewGuid(),
             Name = name,
             Start = start,
-            End = end
+            End = end,
         };
 
         this.Context.Bookings.Add(booking);
@@ -181,7 +185,9 @@ public class ContextShouldContext
         {
             Id = Guid.NewGuid(),
             BookingId = booking.Id,
-            ResourceId = resource.Id
+            ResourceId = resource.Id,
+            Booking = booking,
+            Resource = resource
         };
 
         this.Context.BookingResources.Add(bookingResource);
@@ -199,7 +205,9 @@ public class ContextShouldContext
         {
             Id = Guid.NewGuid(),
             BookingId = booking.Id,
-            SlotId = slot.Id
+            SlotId = slot.Id,
+            Booking = booking,
+            Slot = slot
         };
 
         this.Context.BookingSlots.Add(bookingSlot);

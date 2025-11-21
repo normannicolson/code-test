@@ -152,8 +152,8 @@ public class ContextShould
         var satEnd = new DateTime(2026, 06, 07, 11, 0, 0);
         var sunStart = new DateTime(2026, 06, 07, 15, 0, 0);
         var sunEnd = new DateTime(2026, 06, 08, 11, 0, 0);
-        var monStart = new DateTime(2026, 06, 08, 15, 0, 0);
-        var monEnd = new DateTime(2026, 06, 09, 11, 0, 0);
+        var monStart = new DateTime(2028, 06, 08, 15, 0, 0);
+        var monEnd = new DateTime(2028, 06, 09, 11, 0, 0);
 
         (await new ContextShouldContext()
             .GivenResource("Room 1")

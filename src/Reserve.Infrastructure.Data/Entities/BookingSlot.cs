@@ -4,13 +4,13 @@ namespace Reserve.Infrastructure.Data.Entities;
 
 public class BookingSlot
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
-    public Guid BookingId { get; set; }
+    public required Guid BookingId { get; set; }
 
-    public Guid SlotId { get; set; }
+    public required Guid SlotId { get; set; }
 
-    public virtual Booking Booking { get; set; }
+    public virtual required Booking Booking { get; set; }
 
-    public virtual Slot Slot { get; set; }
+    public virtual required Slot Slot { get; set; }
 }

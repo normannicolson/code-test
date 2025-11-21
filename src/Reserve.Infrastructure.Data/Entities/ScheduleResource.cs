@@ -4,13 +4,13 @@ namespace Reserve.Infrastructure.Data.Entities;
 
 public class ScheduleResource
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
-    public Guid ScheduleId { get; set; }
+    public required Guid ScheduleId { get; set; }
 
-    public Guid ResourceId { get; set; }
+    public required Guid ResourceId { get; set; }
 
-    public virtual Schedule Schedule { get; set; }
+    public virtual required Schedule Schedule { get; set; }
 
-    public virtual Resource Resource { get; set; }
+    public virtual required Resource Resource { get; set; }
 }

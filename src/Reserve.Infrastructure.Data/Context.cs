@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Reserve.Infrastructure.Data.Entities;
 
 namespace Reserve.Infrastructure.Data;
@@ -22,6 +23,16 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
     public virtual DbSet<BookingSlot> BookingSlots { get; set; }
 
     public virtual DbSet<Booked> Bookeds { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+
+        optionsBuilder
+            .LogTo(
+                Console.WriteLine,
+                LogLevel.Information);
+    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
