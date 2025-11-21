@@ -106,7 +106,7 @@ if (builder.Configuration.GetValue<bool>("Features:AllowSeeding"))
             : TypedResults.StatusCode(500);
     });
 
-    app.MapPost("/data/clear", async (
+    app.MapPost("/data/reset", async (
         [FromServices] IDatabaseResetDataCommandHandler handler,
         CancellationToken cancellationToken) => {
 

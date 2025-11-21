@@ -124,7 +124,7 @@ curl -i -X POST http://localhost:5140/data/seed
 
 Reset 
 
-curl -i -X POST http://localhost:5140/data/clear
+curl -i -X POST http://localhost:5140/data/reset
 
 
 ### Run tests 
