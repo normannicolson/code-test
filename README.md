@@ -134,15 +134,36 @@ Create Entities
 
 erDiagram
 
-Schedule ||--|{ Resource : "Rooms"
+  Schedule ||--|{ Resource : "Rooms"
 
-Schedule ||--o{ Slot : "Slots/nights"
+  Schedule ||--o{ Slot : "Slots/nights"
 
-Booking ||--|{ Slot : "Booking slots timespan"
+  Booking ||--|{ Slot : "Booking slots timespan"
 
-Booking ||--|{ Resource : "Booking rooms"
+  Booking ||--|{ Resource : "Booking rooms"
 
 ```
+
+Database Entities 
+
+```mermaid
+
+erDiagram
+
+  Schedule ||--|{ ScheduleResource : Resources
+  Resource ||--|{ ScheduleResource : Resources
+
+  Schedule ||--o{ ScheduleSlot : Slots
+  Slot ||--o{ ScheduleSlot : Slots
+
+  Booking ||--|{ BookingResource : Resources
+  Resource  ||--|{ ScheduleResource : Resources
+
+  Booking ||--|{ BookingSlot : Slots
+  Slot ||--o{ BookingSlot : Slots
+
+```
+
 
 ## Design 
 

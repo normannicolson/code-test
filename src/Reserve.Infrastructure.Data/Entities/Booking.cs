@@ -9,7 +9,7 @@ public class Booking
     public required Guid Id { get; set; }
 
     [StringLength(256)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     public required DateTimeOffset Start { get; set; }
 

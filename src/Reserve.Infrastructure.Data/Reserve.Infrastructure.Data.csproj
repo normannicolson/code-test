@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Reserve.Core\Reserve.Core.csproj" />
+    <ProjectReference Include="..\Reserve.Application\Reserve.Application.csproj" />
+  </ItemGroup>
+
 </Project>

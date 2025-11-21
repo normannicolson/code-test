@@ -22,7 +22,6 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
 
     public virtual DbSet<BookingSlot> BookingSlots { get; set; }
 
-    public virtual DbSet<Booked> Bookeds { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -32,16 +31,5 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             .LogTo(
                 Console.WriteLine,
                 LogLevel.Information);
-    }
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        builder.Entity<Booked>(entity =>
-        {
-            entity.HasNoKey();
-            entity.ToView("Booked");
-        });
-
-        base.OnModelCreating(builder);
     }
 }

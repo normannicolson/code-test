@@ -22,6 +22,10 @@ public class Schedule : IEntity
     public Schedule()
     {
         this.Id = Guid.NewGuid();
+        this.Version = 0;
+        this.Name = string.Empty;
+        this.Start = DateTimeOffset.MinValue;
+        this.End = DateTimeOffset.MinValue;
         this.Resources = [];
         this.Slots = [];
     }
