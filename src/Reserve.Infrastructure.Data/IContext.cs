@@ -5,6 +5,8 @@ namespace Reserve.Infrastructure.Data;
 
 public interface IContext
 {
+    DbSet<Hotel> Hotels { get; set; }
+
     DbSet<Resource> Resources { get; set; }
 
     DbSet<Schedule> Schedules { get; set; }

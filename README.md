@@ -77,6 +77,19 @@ dotnet run --project Reserve.Presentation.Api
 curl -i -X GET http://localhost:5140
 ```
 
+Get Hotels
+
+```
+curl -i -X GET http://localhost:5140/hotels  
+```
+
+Search hotel name 
+
+```
+curl -i -X GET "http://localhost:5140/hotels/search?name=Grand"
+curl -i -X GET "http://localhost:5140/hotels/search?name=Bristol"
+```
+
 Get Booking
 
 ```
@@ -247,6 +260,9 @@ erDiagram
 
 
 ### Create Database 
+
+
+### Used Claude Code to add Hotel enitiy 
 
 ```
 

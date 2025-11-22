@@ -18,6 +18,7 @@ public static class ContextExtensions
     {
         // Get resources that have slots in the time range
         var resourcesWithSlots = context.Resources
+            .Include(r => r.Hotel)
             .Join(context.ScheduleResources, r => r.Id, sr => sr.ResourceId, (r, sr) => new { r, sr })
             .Join(context.Schedules, x => x.sr.ScheduleId, s => s.Id, (x, s) => new { x.r, x.sr, s })
             .Join(context.ScheduleSlots, x => x.s.Id, ss => ss.ScheduleId, (x, ss) => new { x.r, ss })

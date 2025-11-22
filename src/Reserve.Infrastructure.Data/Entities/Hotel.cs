@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace Reserve.Infrastructure.Data.Entities;
+
+public class Hotel
+{
+    public required Guid Id { get; set; }
+
+    [StringLength(256)]
+    public required string Name { get; set; }
+
+    public virtual ICollection<Resource> Rooms { get; set; } = new List<Resource>();
+}

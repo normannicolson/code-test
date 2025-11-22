@@ -22,7 +22,9 @@ public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
             .Select(r => new ResourceDto
             {
                 Id = r.Id,
-                Name = r.Name
+                Name = r.Name,
+                HotelId = r.HotelId,
+                HotelName = r.Hotel?.Name
             })
             .ToList();
 

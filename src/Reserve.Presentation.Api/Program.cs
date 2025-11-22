@@ -7,6 +7,7 @@ using Reserve.Application.Queries;
 using Reserve.Application.QueryHandlers;
 using Reserve.Infrastructure.Data;
 using Reserve.Infrastructure.Data.Data;
+using Reserve.Infrastructure.Data.QueryHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<IContext, Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReserveDatabase")));
 
+builder.Services.AddScoped<IHotelGetAllQueryHandler, HotelGetAllQueryHandler>();
+builder.Services.AddScoped<IHotelSearchQueryHandler, HotelSearchQueryHandler>();
+
 builder.Services.AddScoped<IFindAvailabilityQueryHandler, FindAvailabilityQueryHandler>();
+
 builder.Services.AddScoped<IBookingGetQueryHandler, BookingGetQueryHandler>();
 
 builder.Services.AddScoped<IDatabaseSeedDataCommandHandler, DatabaseSeedDataCommandHandler>();
@@ -36,15 +41,28 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Reserve API is running!");
 
-app.MapGet("/hotels", () => {
+app.MapGet("/hotels", async (
+    [FromServices] IHotelGetAllQueryHandler handler,
+    CancellationToken cancellationToken) => {
 
-    return Results.Ok("List of hotels");
+    var query = new HotelGetAllQuery();
+    var dto = await handler.Handle(query, cancellationToken);
+
+    return TypedResults.Ok(dto);
 });
 
 //Find a hotel based on its name.
-app.MapGet("/hotels/search", (string name) => {
+app.MapGet("/hotels/search", async (
+    [FromQuery] string name,
+    [FromServices] IHotelSearchQueryHandler handler,
+    CancellationToken cancellationToken) => {
 
-    return Results.Ok($"Find a hotel based on its name {name}");
+    var query = new HotelSearchQuery(name);
+    var dto = await handler.Handle(query, cancellationToken);
+
+    return dto != null
+        ? TypedResults.Ok(dto)
+        : Results.NotFound($"Hotel with name containing '{name}' not found");
 });
 
 // Find available rooms between two dates for a given number of people.

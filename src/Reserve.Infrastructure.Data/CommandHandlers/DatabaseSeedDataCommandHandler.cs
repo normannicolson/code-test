@@ -15,7 +15,9 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
 
     public Task<bool> Handle(DatabaseSeedDataCommand command, CancellationToken token)
     {
-        var sql = @"  
+        var sql = @"
+            DECLARE @hotel1 UNIQUEIDENTIFIER = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
+
             DECLARE @room1 UNIQUEIDENTIFIER = 'd4ed1b54-6c29-4a94-9c8f-7f5a36f3d601';
             DECLARE @room2 UNIQUEIDENTIFIER = '94a6bf17-65e3-4c78-9bf0-96c8cba5b2b4';
             DECLARE @room3 UNIQUEIDENTIFIER = '00000000-0000-0000-0000-000000000003';
@@ -42,18 +44,26 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
             DELETE FROM Schedules
             DELETE FROM Slots
             DELETE FROM Resources
+            DELETE FROM Hotels
 
             ------------------------------------------------------------
-            -- Resources
+            -- Hotels
             ------------------------------------------------------------
-            INSERT INTO Resources (Id, Name, [Start], [End])
+            INSERT INTO Hotels (Id, Name)
             VALUES
-                (@room1, 'Room 1', '2026-03-27T00:00:00', '2027-03-27T00:00:00'),
-                (@room2, 'Room 2', '2026-03-27T00:00:00', '2027-03-27T00:00:00'),
-                (@room3, 'Room 3', '2026-03-27T00:00:00', '2027-03-27T00:00:00'),
-                (@room4, 'Room 4', '2026-03-27T00:00:00', '2027-03-27T00:00:00'),
-                (@room5, 'Room 5', '2026-03-27T00:00:00', '2027-03-27T00:00:00'),
-                (@room6, 'Room 6', '2026-03-27T00:00:00', '2027-03-27T00:00:00');
+                (@hotel1, 'Grand Reserve Hotel');
+
+            ------------------------------------------------------------
+            -- Resources (Rooms linked to Hotel)
+            ------------------------------------------------------------
+            INSERT INTO Resources (Id, Name, [Start], [End], HotelId)
+            VALUES
+                (@room1, 'Room 1', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
+                (@room2, 'Room 2', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
+                (@room3, 'Room 3', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
+                (@room4, 'Room 4', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
+                (@room5, 'Room 5', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
+                (@room6, 'Room 6', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1);
 
             ------------------------------------------------------------
             -- Slots

@@ -15,6 +15,10 @@ public class Resource
 
     public required DateTimeOffset End { get; set; }
 
+    public Guid? HotelId { get; set; }
+
+    public virtual Hotel? Hotel { get; set; }
+
     public virtual ICollection<ScheduleResource> ScheduleResources { get; set; } = new List<ScheduleResource>();
 
     public virtual ICollection<BookingResource> BookingResources { get; set; } = new List<BookingResource>();

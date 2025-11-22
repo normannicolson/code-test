@@ -6,6 +6,8 @@ namespace Reserve.Infrastructure.Data;
 
 public class Context(DbContextOptions<Context> options) : DbContext(options), IContext
 {
+    public virtual DbSet<Hotel> Hotels { get; set; }
+
     public virtual DbSet<Resource> Resources { get; set; }
 
     public virtual DbSet<Schedule> Schedules { get; set; }
