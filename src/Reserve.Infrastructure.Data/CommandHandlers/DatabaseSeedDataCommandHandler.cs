@@ -37,13 +37,13 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
             -- Cleanup to keep script repeatable
             ------------------------------------------------------------
             DELETE FROM BookingSlots
-            DELETE FROM BookingResources
+            DELETE FROM BookingRooms
             DELETE FROM Bookings
             DELETE FROM ScheduleSlots
-            DELETE FROM ScheduleResources
+            DELETE FROM ScheduleRooms
             DELETE FROM Schedules
             DELETE FROM Slots
-            DELETE FROM Resources
+            DELETE FROM Rooms
             DELETE FROM Hotels
 
             ------------------------------------------------------------
@@ -54,9 +54,9 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
                 (@hotel1, 'Grand Reserve Hotel');
 
             ------------------------------------------------------------
-            -- Resources (Rooms linked to Hotel)
+            -- Rooms (Rooms linked to Hotel)
             ------------------------------------------------------------
-            INSERT INTO Resources (Id, Name, [Start], [End], HotelId)
+            INSERT INTO Rooms (Id, Name, [Start], [End], HotelId)
             VALUES
                 (@room1, 'Room 1', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
                 (@room2, 'Room 2', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
@@ -80,7 +80,7 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
             INSERT INTO Schedules (Id, Name, [Start], [End])
             VALUES (@schedule, 'Default', '2026-03-27T00:00:00', '2027-03-27T00:00:00');
 
-            INSERT INTO ScheduleResources (Id, ScheduleId, ResourceId)
+            INSERT INTO ScheduleRooms (Id, ScheduleId, RoomId)
             VALUES
                 ('1f4cc4da-3d5f-4d37-9120-f0ddc1e9a8f2', @schedule, @room1),
                 ('7db2f5f6-d5c8-4b80-ae9e-0af7a1a7b4e6', @schedule, @room2),
@@ -102,7 +102,7 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
             VALUES
                 (@booking, 'Booking 1', '2026-06-05T15:00:00', '2026-06-06T11:00:00');
 
-            INSERT INTO BookingResources (Id, BookingId, ResourceId)
+            INSERT INTO BookingRooms (Id, BookingId, RoomId)
             VALUES ('16a8a3f4-6d03-4c5a-9f0a-a7a5cd3cb8ea', @booking, @room1);
 
             INSERT INTO BookingSlots (Id, BookingId, SlotId)
@@ -110,7 +110,7 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
             ";
 
         var rowsModified = context.Database.ExecuteSqlRaw(sql);
-        
+
         return Task.FromResult(true);
     }
 }

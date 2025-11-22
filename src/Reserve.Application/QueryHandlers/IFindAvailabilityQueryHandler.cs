@@ -1,8 +1,9 @@
+using Reserve.Application.Dtos;
 using Reserve.Application.Queries;
 
 namespace Reserve.Application.QueryHandlers;
 
 public interface IFindAvailabilityQueryHandler
 {
-    Task<IEnumerable<ResourceDto>> Handle(FindAvailabilityQuery query, CancellationToken token);
+    Task<IEnumerable<RoomDto>> Handle(FindAvailabilityQuery query, CancellationToken token);
 }

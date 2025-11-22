@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Reserve.Infrastructure.Data.Entities;
 
-public class Resource
+public class Room
 {
     public required Guid Id { get; set; }
 
@@ -19,7 +19,7 @@ public class Resource
 
     public virtual Hotel? Hotel { get; set; }
 
-    public virtual ICollection<ScheduleResource> ScheduleResources { get; set; } = new List<ScheduleResource>();
+    public virtual ICollection<ScheduleRoom> ScheduleRooms { get; set; } = new List<ScheduleRoom>();
 
-    public virtual ICollection<BookingResource> BookingResources { get; set; } = new List<BookingResource>();
+    public virtual ICollection<BookingRoom> BookingRooms { get; set; } = new List<BookingRoom>();
 }

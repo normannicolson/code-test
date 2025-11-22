@@ -15,7 +15,7 @@ public class Booking : IEntity
 
     public DateTimeOffset End { get; set; } 
 
-    public IList<Resource> Resources { get; set; }
+    public IList<Room> Rooms { get; set; }
 
     public IList<Slot> Slots { get; set; }
 
@@ -31,7 +31,7 @@ public class Booking : IEntity
         this.Name = name;
         this.Start = start;
         this.End = end;
-        this.Resources = [];
+        this.Rooms = [];
         this.Slots = [];
     }
 }

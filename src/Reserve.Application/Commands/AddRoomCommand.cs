@@ -2,7 +2,7 @@ using System;
 
 namespace Reserve.Application.Commands;
 
-public sealed class AddResourceCommand
+public sealed class AddRoomCommand
 {
     public Guid Id { get; }
 
@@ -12,7 +12,7 @@ public sealed class AddResourceCommand
 
     public DateTimeOffset End { get; }
 
-    public AddResourceCommand(
+    public AddRoomCommand(
         Guid id,
         string name,
         DateTimeOffset start,

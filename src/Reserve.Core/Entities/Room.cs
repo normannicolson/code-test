@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Reserve.Core.Entities;
 
-public class Resource : IEntity
+public class Room : IEntity
 {
     public Guid Id { get; set; }
 
@@ -15,11 +15,11 @@ public class Resource : IEntity
 
     public DateTimeOffset End { get; set; }
 
-    public Resource(
+    public Room(
         Guid id,
         long version,
-        string name, 
-        DateTimeOffset start, 
+        string name,
+        DateTimeOffset start,
         DateTimeOffset end)
     {
         this.Id = id;

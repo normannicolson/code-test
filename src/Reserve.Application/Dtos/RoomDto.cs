@@ -1,4 +1,6 @@
-public class ResourceDto
+namespace Reserve.Application.Dtos;
+
+public class RoomDto
 {
     public Guid Id { get; set; }
 

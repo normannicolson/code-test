@@ -13,7 +13,7 @@ public class ContextShouldContext
 {
     private Context Context { get; }
 
-    private IEnumerable<Resource>? AvailableResources { get; set; } = null;
+    private IEnumerable<Room>? AvailableRooms { get; set; } = null;
 
     public ContextShouldContext()
     {
@@ -26,9 +26,9 @@ public class ContextShouldContext
         this.Context = new Context(options);
     }
 
-    public ContextShouldContext GivenResource(string name)
+    public ContextShouldContext GivenRoom(string name)
     {
-        var resource = new Reserve.Infrastructure.Data.Entities.Resource
+        var room = new Reserve.Infrastructure.Data.Entities.Room
         {
             Id = Guid.NewGuid(),
             Name = name,
@@ -36,7 +36,7 @@ public class ContextShouldContext
             End = new DateTime(2022, 01, 01, 0, 0, 0)
         };
 
-        this.Context.Resources.Add(resource);
+        this.Context.Rooms.Add(room);
 
         this.Context.SaveChanges();
         return this;
@@ -120,21 +120,21 @@ public class ContextShouldContext
         return this;
     }
 
-    public ContextShouldContext GivenScheduleResource(string scheduleName, string resourceName)
+    public ContextShouldContext GivenScheduleRoom(string scheduleName, string roomName)
     {
         var schedule = Context.Schedules.FirstOrDefault(i => i.Name.Equals(scheduleName));
-        var resource = Context.Resources.FirstOrDefault(i => i.Name.Equals(resourceName));
+        var room = Context.Rooms.FirstOrDefault(i => i.Name.Equals(roomName));
 
-        var scheduleResource = new Entities.ScheduleResource
+        var scheduleRoom = new Entities.ScheduleRoom
         {
             Id = Guid.NewGuid(),
             ScheduleId = schedule!.Id,
-            ResourceId = resource!.Id,
+            RoomId = room!.Id,
             Schedule = schedule,
-            Resource = resource
+            Room = room
         };
 
-        this.Context.ScheduleResources.Add(scheduleResource);
+        this.Context.ScheduleRooms.Add(scheduleRoom);
 
         this.Context.SaveChanges();
         return this;
@@ -176,21 +176,21 @@ public class ContextShouldContext
         return this;
     }
 
-    public ContextShouldContext GivenBookingResource(string bookingName, string resourceName)
+    public ContextShouldContext GivenBookingRoom(string bookingName, string roomName)
     {
         var booking = Context.Bookings.FirstOrDefault(i => i.Name.Equals(bookingName));
-        var resource = Context.Resources.FirstOrDefault(i => i.Name.Equals(resourceName));
+        var room = Context.Rooms.FirstOrDefault(i => i.Name.Equals(roomName));
 
-        var bookingResource = new Entities.BookingResource
+        var bookingRoom = new Entities.BookingRoom
         {
             Id = Guid.NewGuid(),
             BookingId = booking!.Id,
-            ResourceId = resource!.Id,
+            RoomId = room!.Id,
             Booking = booking,
-            Resource = resource
+            Room = room
         };
 
-        this.Context.BookingResources.Add(bookingResource);
+        this.Context.BookingRooms.Add(bookingRoom);
 
         this.Context.SaveChanges();
         return this;
@@ -216,29 +216,29 @@ public class ContextShouldContext
         return this;
     }
 
-    public async Task<ContextShouldContext> WhenFindAvailableResourceIsCalled(DateTimeOffset start, DateTimeOffset end)
+    public async Task<ContextShouldContext> WhenFindAvailableRoomIsCalled(DateTimeOffset start, DateTimeOffset end)
     {
-        this.AvailableResources = await this.Context.FindAvailableResources(start, end, CancellationToken.None);
+        this.AvailableRooms = await this.Context.FindAvailableRooms(start, end, CancellationToken.None);
 
         return this;
     }
 
-    public ContextShouldContext ThenAvailableResourceCount(int count)
+    public ContextShouldContext ThenAvailableRoomCount(int count)
     {
-        Assert.IsNotNull(this.AvailableResources);
+        Assert.IsNotNull(this.AvailableRooms);
 
-        this.AvailableResources.Count()
+        this.AvailableRooms.Count()
             .Should().Be(count);
 
         return this;
     }
 
-    public ContextShouldContext ThenAvailableResourcesContains(string name)
+    public ContextShouldContext ThenAvailableRoomsContains(string name)
     {
-        var expected = this.Context.Resources
+        var expected = this.Context.Rooms
             .First(i => i.Name.Equals(name));
 
-        this.AvailableResources
+        this.AvailableRooms
             .Should().Contain(expected);
 
         return this;

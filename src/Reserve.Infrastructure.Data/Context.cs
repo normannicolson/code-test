@@ -8,19 +8,19 @@ public class Context(DbContextOptions<Context> options) : DbContext(options), IC
 {
     public virtual DbSet<Hotel> Hotels { get; set; }
 
-    public virtual DbSet<Resource> Resources { get; set; }
+    public virtual DbSet<Room> Rooms { get; set; }
 
     public virtual DbSet<Schedule> Schedules { get; set; }
 
     public virtual DbSet<Slot> Slots { get; set; }
 
-    public virtual DbSet<ScheduleResource> ScheduleResources { get; set; }
+    public virtual DbSet<ScheduleRoom> ScheduleRooms { get; set; }
 
     public virtual DbSet<ScheduleSlot> ScheduleSlots { get; set; }
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
-    public virtual DbSet<BookingResource> BookingResources { get; set; }
+    public virtual DbSet<BookingRoom> BookingRooms { get; set; }
 
     public virtual DbSet<BookingSlot> BookingSlots { get; set; }
 

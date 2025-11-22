@@ -11,5 +11,5 @@ public class Hotel
     [StringLength(256)]
     public required string Name { get; set; }
 
-    public virtual ICollection<Resource> Rooms { get; set; } = new List<Resource>();
+    public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();
 }

@@ -15,7 +15,7 @@ public class Schedule : IEntity
 
     public DateTimeOffset End { get; set; } 
 
-    public IList<Resource> Resources { get; set; }
+    public IList<Room> Rooms { get; set; }
 
     public IList<Slot> Slots { get; set; }
 
@@ -26,7 +26,7 @@ public class Schedule : IEntity
         this.Name = string.Empty;
         this.Start = DateTimeOffset.MinValue;
         this.End = DateTimeOffset.MinValue;
-        this.Resources = [];
+        this.Rooms = [];
         this.Slots = [];
     }
 
@@ -42,7 +42,7 @@ public class Schedule : IEntity
         this.Name = name;
         this.Start = start;
         this.End = end;        
-        this.Resources = [];
+        this.Rooms = [];
         this.Slots = [];
     }
 }

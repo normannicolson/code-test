@@ -15,7 +15,7 @@ namespace Reserve.Infrastructure.Data.Entities;
 
         public required DateTimeOffset End { get; set; }
 
-        public virtual ICollection<ScheduleResource> ScheduleResources { get; set; } = new List<ScheduleResource>();
+        public virtual ICollection<ScheduleRoom> ScheduleRooms { get; set; } = new List<ScheduleRoom>();
 
         public virtual ICollection<ScheduleSlot> ScheduleSlots { get; set; } = new List<ScheduleSlot>();
     }

@@ -15,7 +15,7 @@ public class Booking
 
     public required DateTimeOffset End { get; set; }
 
-    public virtual BookingResource? BookingResource { get; set; }
+    public virtual BookingRoom? BookingRoom { get; set; }
 
     public virtual ICollection<BookingSlot> BookingSlots { get; set; } = new List<BookingSlot>();
 }

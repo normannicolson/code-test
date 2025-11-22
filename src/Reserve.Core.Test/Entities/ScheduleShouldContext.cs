@@ -31,19 +31,19 @@ public class ScheduleShouldContext
         return this;
     }
 
-    public ScheduleShouldContext GivenScheduleResource(string name, long version, DateTimeOffset start, DateTimeOffset end)
+    public ScheduleShouldContext GivenScheduleRoom(string name, long version, DateTimeOffset start, DateTimeOffset end)
     {
-        var resource = new Reserve.Core.Entities.Resource(Guid.NewGuid(), version, name, start, end);
+        var room = new Reserve.Core.Entities.Room(Guid.NewGuid(), version, name, start, end);
 
-        this.sut.Resources.Add(resource);
+        this.sut.Rooms.Add(room);
 
         return this;
     }
 
-        public ScheduleShouldContext GivenBooking(string name, long version, DateTimeOffset start, DateTimeOffset end, string resourceName)
+        public ScheduleShouldContext GivenBooking(string name, long version, DateTimeOffset start, DateTimeOffset end, string roomName)
     {
-        var resource = this.sut.Resources
-            .First(s => s.Name.Equals(resourceName, StringComparison.InvariantCulture));
+        var room = this.sut.Rooms
+            .First(s => s.Name.Equals(roomName, StringComparison.InvariantCulture));
 
         var slot = this.sut.Slots
             .First(s => s.Start == start && s.End == end);
@@ -51,7 +51,7 @@ public class ScheduleShouldContext
         var booking = new Reserve.Core.Entities.Booking(Guid.NewGuid(), version, name, start, end)
         {
             Slots = new List<Slot> { slot },
-            Resources = new List<Resource> { resource }
+            Rooms = new List<Room> { room }
         };
 
         return this;

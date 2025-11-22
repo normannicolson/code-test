@@ -17,18 +17,18 @@ public class DatabaseResetDataCommandHandler : IDatabaseResetDataCommandHandler
     {
         var sql = @"
             DELETE FROM BookingSlots;
-            DELETE FROM BookingResources;
+            DELETE FROM BookingRooms;
             DELETE FROM Bookings;
             DELETE FROM ScheduleSlots;
-            DELETE FROM ScheduleResources;
+            DELETE FROM ScheduleRooms;
             DELETE FROM Schedules;
             DELETE FROM Slots;
-            DELETE FROM Resources;
+            DELETE FROM Rooms;
             DELETE FROM Hotels;
             ";
 
         var rowsModified = context.Database.ExecuteSqlRaw(sql);
-        
+
         return Task.FromResult(true);
     }
 }

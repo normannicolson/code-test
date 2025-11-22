@@ -7,19 +7,19 @@ public interface IContext
 {
     DbSet<Hotel> Hotels { get; set; }
 
-    DbSet<Resource> Resources { get; set; }
+    DbSet<Room> Rooms { get; set; }
 
     DbSet<Schedule> Schedules { get; set; }
 
     DbSet<Slot> Slots { get; set; }
 
-    DbSet<ScheduleResource> ScheduleResources { get; set; }
+    DbSet<ScheduleRoom> ScheduleRooms { get; set; }
 
     DbSet<ScheduleSlot> ScheduleSlots { get; set; }
 
     DbSet<Booking> Bookings { get; set; }
 
-    DbSet<BookingResource> BookingResources { get; set; }
+    DbSet<BookingRoom> BookingRooms { get; set; }
     
     DbSet<BookingSlot> BookingSlots { get; set; }
 }
