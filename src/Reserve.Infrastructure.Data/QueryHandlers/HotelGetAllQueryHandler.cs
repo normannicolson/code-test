@@ -18,10 +18,14 @@ public sealed class HotelGetAllQueryHandler : IHotelGetAllQueryHandler
     {
         var hotels = await dbContext.Hotels.ToListAsync(token);
 
-        return hotels.Select(h => new HotelDto
+        return hotels.Select(h =>
         {
-            Id = h.Id,
-            Name = h.Name
+            var dto = new HotelDto
+            {
+                Id = h.Id,
+                Name = h.Name
+            };
+            return dto;
         });
     }
 }

@@ -66,14 +66,15 @@ app.MapGet("/hotels/search", async (
 });
 
 // Find available rooms between two dates for a given number of people.
-app.MapGet("/rooms/search", async (
-    [FromQuery]DateTime from,
-    [FromQuery]DateTime to,
-    [FromQuery]int numberOfPeople,
-    [FromServices] IFindAvailabilityQueryHandler handler,
+app.MapGet("/hotels/{hotelId}/rooms/search", async (
+    [FromRoute] Guid hotelId,
+    [FromQuery] DateTime from,
+    [FromQuery] DateTime to,
+    [FromQuery] int numberOfPeople,
+    [FromServices] IFindHotelAvailabilityQueryHandler handler,
     CancellationToken cancellationToken) => {
 
-    var query = new FindAvailabilityQuery(from, to);
+    var query = new FindHotelAvailabilityQuery(hotelId, from, to, numberOfPeople);
 
     var dto = await handler.Handle(query, cancellationToken);
 
@@ -81,11 +82,11 @@ app.MapGet("/rooms/search", async (
 });
 
 // Book a room.
-app.MapPost("/bookings", () => {
+app.MapPost("/hotels/{hotelId}/bookings", ([FromRoute] Guid hotelId) => {
 
     //Room Id
-    
-    //Slots Ids 
+
+    //Slots Ids
 
     return Results.Ok("Book a room.");
 });
@@ -105,7 +106,7 @@ app.MapGet("/bookings/{id}", async (
 
 if (builder.Configuration.GetValue<bool>("Features:AllowSeeding"))
 {
-    app.MapGet("/data", async (
+    app.MapGet("/data/info", async (
         CancellationToken cancellationToken) => {  
               
         return TypedResults.Ok("Seeding is enabled.");

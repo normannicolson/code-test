@@ -7,16 +7,16 @@ using Reserve.Infrastructure.Data;
 
 namespace Reserve.Infrastructure.Data.QueryHandlers;
 
-public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
+public sealed class FindHotelAvailabilityQueryHandler : IFindHotelAvailabilityQueryHandler
 {
     IContext dbContext;
 
-    public FindAvailabilityQueryHandler(IContext dbContext)
+    public FindHotelAvailabilityQueryHandler(IContext dbContext)
     {
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<RoomDto>> Handle(FindAvailabilityQuery query, CancellationToken token)
+    public async Task<IEnumerable<RoomDto>> Handle(FindHotelAvailabilityQuery query, CancellationToken token)
     {
         var availableRooms = await dbContext.FindAvailableRooms(
             query.Start,

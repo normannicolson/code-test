@@ -28,25 +28,58 @@ public class ContextShouldContext
         this.Context.RoomTypes.Add(
             new RoomType
             {
+                Id = Reserve.Core.RoomType.Single,
+                DisplayName = "Single",
+                MaxOccupancy = 1
+            });
+
+        this.Context.RoomTypes.Add(
+            new RoomType
+            {
                 Id = Reserve.Core.RoomType.Double,
                 DisplayName = "Double",
                 MaxOccupancy = 2
             });
 
+        this.Context.RoomTypes.Add(
+            new RoomType
+            {
+                Id = Reserve.Core.RoomType.Deluxe,
+                DisplayName = "Deluxe",
+                MaxOccupancy = 4
+            });
+
         this.Context.SaveChanges();
     }
 
-    public ContextShouldContext GivenRoom(string name)
+    public ContextShouldContext GivenHotel(string name)
+    {
+        var hotel = new Reserve.Infrastructure.Data.Entities.Hotel
+        {
+            Id = Guid.NewGuid(),
+            Name = name
+        };
+
+        this.Context.Hotels.Add(hotel);
+
+        this.Context.SaveChanges();
+        return this;
+    }
+
+    public ContextShouldContext GivenRoom(string hotelName, string name)
     {
         var roomType = this.Context.RoomTypes.First(i => i.Id == Reserve.Core.RoomType.Double);
-        
+        var hotel = this.Context.Hotels.First(i => i.Name.Equals(hotelName));
+
         var room = new Reserve.Infrastructure.Data.Entities.Room
         {
             Id = Guid.NewGuid(),
             Name = name,
             Start = new DateTime(2021, 01, 01, 0, 0, 0),
             End = new DateTime(2022, 01, 01, 0, 0, 0),
-            RoomType = roomType
+            RoomType = roomType,
+            HotelId = hotel.Id,
+            Hotel = hotel
         };
 
         this.Context.Rooms.Add(room);
@@ -133,10 +166,14 @@ public class ContextShouldContext
         return this;
     }
 
-    public ContextShouldContext GivenScheduleRoom(string scheduleName, string roomName)
+    public ContextShouldContext GivenScheduleRoom(string scheduleName, string roomName, string hotelName)
     {
-        var schedule = Context.Schedules.FirstOrDefault(i => i.Name.Equals(scheduleName));
-        var room = Context.Rooms.FirstOrDefault(i => i.Name.Equals(roomName));
+        var schedule = Context.Schedules.First(i => i.Name.Equals(scheduleName));
+
+        var room = Context.Rooms
+            .Include(i => i.Hotel)
+            .Where(i => i.Hotel!.Name.Equals(hotelName))
+            .First(i => i.Name.Equals(roomName));
 
         var scheduleRoom = new Entities.ScheduleRoom
         {
@@ -231,7 +268,7 @@ public class ContextShouldContext
 
     public async Task<ContextShouldContext> WhenFindAvailableRoomIsCalled(DateTimeOffset start, DateTimeOffset end)
     {
-        this.AvailableRooms = await this.Context.FindAvailableRooms(start, end, CancellationToken.None);
+        this.AvailableRooms = await this.Context.FindAvailableRooms(start, end, numberOfPeople: 2, CancellationToken.None);
 
         return this;
     }

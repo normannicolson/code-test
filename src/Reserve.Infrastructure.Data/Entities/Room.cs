@@ -16,11 +16,11 @@ public class Room
 
     public required DateTimeOffset End { get; set; }
 
-    public Guid? HotelId { get; set; }
+    public Guid HotelId { get; set; }
 
     public required RoomType RoomType { get; set; }
 
-    public virtual Hotel? Hotel { get; set; }
+    public virtual required Hotel Hotel { get; set; }
 
     public virtual ICollection<ScheduleRoom> ScheduleRooms { get; set; } = new List<ScheduleRoom>();
 
