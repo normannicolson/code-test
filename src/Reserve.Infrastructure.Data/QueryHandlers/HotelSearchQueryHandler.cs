@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Reserve.Application.Dtos;
 using Reserve.Application.Queries;
 using Reserve.Application.QueryHandlers;
+using Reserve.Application.Results;
 
 namespace Reserve.Infrastructure.Data.QueryHandlers;
 
@@ -14,7 +15,7 @@ public sealed class HotelSearchQueryHandler : IHotelSearchQueryHandler
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<HotelDto>> Handle(HotelSearchQuery query, CancellationToken token)
+    public async Task<Result<IEnumerable<HotelDto>>> Handle(HotelSearchQuery query, CancellationToken token)
     {
         var hotels = await dbContext
             .FindHotel(query.Name, token)
@@ -25,6 +26,6 @@ public sealed class HotelSearchQueryHandler : IHotelSearchQueryHandler
             })
             .ToListAsync(token);
 
-        return hotels;
+        return new SuccessResult<IEnumerable<HotelDto>>(hotels);
     }
 }

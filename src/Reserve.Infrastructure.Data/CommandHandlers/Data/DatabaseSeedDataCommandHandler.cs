@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Reserve.Application.CommandHandlers.Data;
 using Reserve.Application.Commands.Data;
+using Reserve.Application.Results;
 
 namespace Reserve.Infrastructure.Data.CommandHandlers.Data;
 
@@ -13,7 +14,7 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
         this.context = context;
     }
 
-    public Task<bool> Handle(DatabaseSeedDataCommand command, CancellationToken token)
+    public Task<Result<bool>> Handle(DatabaseSeedDataCommand command, CancellationToken token)
     {
         var sql = @"
             DECLARE @hotel1 UNIQUEIDENTIFIER = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
@@ -123,6 +124,6 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
 
         var rowsModified = context.Database.ExecuteSqlRaw(sql);
 
-        return Task.FromResult(true);
+        return Task.FromResult<Result<bool>>(new SuccessResult<bool>(true));
     }
 }

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Reserve.Application.Dtos;
 using Reserve.Application.Queries;
 using Reserve.Application.QueryHandlers;
+using Reserve.Application.Results;
 using Reserve.Core.Entities;
 using Reserve.Infrastructure.Data;
 
@@ -16,7 +17,7 @@ public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<RoomDto>> Handle(FindAvailabilityQuery query, CancellationToken token)
+    public async Task<Result<IEnumerable<RoomDto>>> Handle(FindAvailabilityQuery query, CancellationToken token)
     {
         var availableRooms = await dbContext
             .FindAvailableRooms(
@@ -37,6 +38,6 @@ public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
             )
             .ToList();
 
-        return await Task.FromResult(roomDtos);
+        return new SuccessResult<IEnumerable<RoomDto>>(roomDtos);
     }
 }
