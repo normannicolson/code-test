@@ -68,11 +68,11 @@ Your solution must allow an API consumer to perform the following:
 ## From repo root folder
 
 ```
-docker build --platform linux/amd64 --file src/Reserve.Presentation.Api/Dockerfile -tag reserve-api:1.0.0 .
+docker build --platform linux/amd64 --file src/Reserve.Presentation.Api/Dockerfile -t reserve-api:1.0.1 .
 
-docker run -p 8080:80 -it --platform linux/amd64 --name reserve-api reserve-api:latest
+docker run -p 8080:80 -it --platform linux/amd64 --name reserve-api reserve-api:1.0.1
 
-az acr build --registry <Name> --image reserve-api:1.0.0 --file src/Reserve.Presentation.Api/Dockerfile . 
+az acr build --registry <Name> --image reserve-api:1.0.1 --file src/Reserve.Presentation.Api/Dockerfile . 
 ```
 
 ## Run Application 
@@ -428,3 +428,14 @@ ALTER ROLE db_datareader ADD MEMBER [norman-nicolson-hotel];
 ALTER ROLE db_datawriter ADD MEMBER [norman-nicolson-hotel];
 
 Server=tcp:<server>.database.windows.net,1433;Database=<db-name>;Authentication=Active Directory Managed Identity;Encrypt=True;
+
+az containerapp revision set-mode \
+    --name norman-nicolson-hotel  \
+    --resource-group norman-nicolson-hotel  \
+    --mode multiple 
+
+az containerapp update \
+    --name norman-nicolson-hotel  \
+    --resource-group norman-nicolson-hotel  \
+    --image nlist.azurecr.io/reserve-api:1.0.1 \
+    --revision-suffix "v2"
