@@ -65,7 +65,9 @@ Your solution must allow an API consumer to perform the following:
     the deliverable.
 - The API requires no authentication.
 
-## From repo root folder
+## Docker 
+
+From repo root folder
 
 ```
 docker build --platform linux/amd64 --file src/Reserve.Presentation.Api/Dockerfile -t reserve-api:1.0.1 .
@@ -77,17 +79,17 @@ az acr build --registry <Name> --image reserve-api:1.0.1 --file src/Reserve.Pres
 
 ## Run Application 
 
-from ```src``` folder
+From repo root folder
 
 ```
-dotnet run --project Reserve.Presentation.Api
+dotnet run --project src/Reserve.Presentation.Api
 ```
 
 ```
 curl -i -X GET http://localhost:5140
 ```
 
-Check if seen toggle on 
+Check if seed toggle on 
 ```
 curl -i -X GET http://localhost:5140/data/info 
 ```

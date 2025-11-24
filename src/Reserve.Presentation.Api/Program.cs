@@ -18,7 +18,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<Context>();
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
@@ -39,6 +41,8 @@ builder.Services.AddScoped<IDatabaseSeedDataCommandHandler, DatabaseSeedDataComm
 builder.Services.AddScoped<IDatabaseResetDataCommandHandler, DatabaseResetDataCommandHandler>();
 
 var app = builder.Build();
+
+app.MapHealthChecks("/health");
 
 app.MapOpenApi();
 app.UseSwagger();
