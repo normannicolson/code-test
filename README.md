@@ -68,9 +68,11 @@ Your solution must allow an API consumer to perform the following:
 ## From repo root folder
 
 ```
-docker build --platform linux/amd64 -f src/Reserve.Presentation.Api/Dockerfile -t reserve-api:1.0.0 .
+docker build --platform linux/amd64 --file src/Reserve.Presentation.Api/Dockerfile -tag reserve-api:1.0.0 .
 
 docker run -p 8080:80 -it --platform linux/amd64 --name reserve-api reserve-api:latest
+
+az acr build --registry <Name> --image reserve-api:1.0.0 --file src/Reserve.Presentation.Api/Dockerfile . 
 ```
 
 ## Run Application 
@@ -358,3 +360,51 @@ Booking ||--|{ Slot : "Booking slots timespan"
 Booking ||--|{ Resource : "Booking resource products"
 
 ```
+
+az group create \
+  --name norman-nicolson-hotel \ 
+  --location 'UK South' 
+
+az monitor log-analytics workspace create \
+  --resource-group norman-nicolson-hotel \
+  --workspace-name norman-nicolson-hotel \
+  --location 'UK South' 
+
+az monitor log-analytics workspace show \
+  --resource-group norman-nicolson-hotel \
+  --workspace-name norman-nicolson-hotel| jq .customerId
+Get Key for logs-workspace-key
+
+az monitor log-analytics workspace get-shared-keys \
+  --resource-group norman-nicolson-hotel \
+  --workspace-name norman-nicolson-hotel | jq .primarySharedKey 
+
+az containerapp env create \
+  --name norman-nicolson-hotel  \
+  --resource-group norman-nicolson-hotel  \
+  --location "UK South" 
+
+az containerapp create \
+  --name norman-nicolson-hotel  \
+  --resource-group norman-nicolson-hotel  \
+  --environment norman-nicolson-hotel  \
+  --image nlist.azurecr.io/reserve-api:1.0.0 \
+  --target-port 80 \
+  --ingress external \
+  --cpu 0.5 \
+  --memory 1.0Gi \
+  --min-replicas 0 \
+  --max-replicas 1 \
+  --query properties.outputs.fqdn
+
+az containerapp identity assign \
+  --name norman-nicolson-hotel \
+  --resource-group norman-nicolson-hotel \
+  --system-assigned
+
+CREATE USER [norman-nicolson-hotel] FROM EXTERNAL PROVIDER WITH OBJECT_ID = '';
+
+ALTER ROLE db_datareader ADD MEMBER [norman-nicolson-hotel];
+ALTER ROLE db_datawriter ADD MEMBER [norman-nicolson-hotel];
+
+Server=tcp:<server>.database.windows.net,1433;Database=<db-name>;Authentication=Active Directory Managed Identity;Encrypt=True;
