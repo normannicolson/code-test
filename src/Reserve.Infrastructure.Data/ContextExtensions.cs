@@ -107,24 +107,31 @@ public static class ContextExtensions
 
     public static async Task<Booking> GetBooking(
         this IContext context,
-        Guid id, 
+        Guid id,
         CancellationToken cancellationToken)
     {
         var booking = await context.Bookings
             .FirstAsync(i => i.Id.Equals(id), cancellationToken);
-        
+
         return booking;
     }
 
+    public static async Task<List<Slot>> FindRoomSlotsForPeriod(
+        this IContext context,
+        DateTimeOffset start,
+        DateTimeOffset end,
+        Guid roomId,
+        CancellationToken cancellationToken = default)
+    {
+        var slots = await context.ScheduleRooms
+            .Where(sr => sr.RoomId == roomId)
+            .Join(context.Schedules, sr => sr.ScheduleId, s => s.Id, (sr, s) => s)
+            .Join(context.ScheduleSlots, s => s.Id, ss => ss.ScheduleId, (s, ss) => ss)
+            .Join(context.Slots, ss => ss.SlotId, slot => slot.Id, (ss, slot) => slot)
+            .Where(slot => slot.Start <= end && slot.End >= start)
+            .Distinct()
+            .ToListAsync(cancellationToken);
 
-            // var bookings = await dbContext.BookingRooms
-            // .Where(br => br.Room.HotelId == query.HotelId)
-            // .Select(br => br.Booking)
-            // .Distinct()
-            // .Select(b => new BookingDto
-            // {
-            //     Id = b.Id,
-            //     Name = b.Name
-            // })
-            // .ToListAsync(token);
+        return slots;
+    }
 }
