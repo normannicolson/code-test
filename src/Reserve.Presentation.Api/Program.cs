@@ -5,6 +5,7 @@ using Reserve.Application.CommandHandlers;
 using Reserve.Application.CommandHandlers.Data;
 using Reserve.Application.Commands;
 using Reserve.Application.Commands.Data;
+using Reserve.Application.Dtos;
 using Reserve.Application.Queries;
 using Reserve.Infrastructure.Data.CommandHandlers;
 using Reserve.Infrastructure.Data.CommandHandlers.Data;
@@ -47,28 +48,42 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Reserve API is running!");
 
-app.MapGet("/hotels", async (
+app.MapGet("/hotels", async Task<Results<Ok<object>, BadRequest<object>>> (
     [FromServices] IHotelGetAllQueryHandler handler,
     CancellationToken cancellationToken) => {
 
     var query = new HotelGetAllQuery();
-    var dto = await handler.Handle(query, cancellationToken);
+    var result = await handler.Handle(query, cancellationToken);
 
-    return TypedResults.Ok(dto);
+    if (result.IsFailure)
+    {
+        var error = (ErrorResult<IEnumerable<HotelDto>>)result;
+        return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+    }
+
+    var success = (SuccessResult<IEnumerable<HotelDto>>)result;
+    return TypedResults.Ok<object>(success.Value);
 });
 
-app.MapGet("/hotels/search", async (
+app.MapGet("/hotels/search", async Task<Results<Ok<object>, BadRequest<object>>> (
     [FromQuery] string name,
     [FromServices] IHotelSearchQueryHandler handler,
     CancellationToken cancellationToken) => {
 
     var query = new HotelSearchQuery(name);
-    var dto = await handler.Handle(query, cancellationToken);
+    var result = await handler.Handle(query, cancellationToken);
 
-    return TypedResults.Ok(dto);
+    if (result.IsFailure)
+    {
+        var error = (ErrorResult<IEnumerable<HotelDto>>)result;
+        return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+    }
+
+    var success = (SuccessResult<IEnumerable<HotelDto>>)result;
+    return TypedResults.Ok<object>(success.Value);
 });
 
-app.MapGet("/hotels/{hotelId}/rooms/availability-search", async (
+app.MapGet("/hotels/{hotelId}/rooms/availability-search", async Task<Results<Ok<object>, BadRequest<object>>> (
     [FromRoute] Guid hotelId,
     [FromQuery] DateTime from,
     [FromQuery] DateTime to,
@@ -77,21 +92,35 @@ app.MapGet("/hotels/{hotelId}/rooms/availability-search", async (
     CancellationToken cancellationToken) => {
 
     var query = new FindHotelAvailabilityQuery(hotelId, from, to, numberOfPeople);
-    var dto = await handler.Handle(query, cancellationToken);
+    var result = await handler.Handle(query, cancellationToken);
 
-    return TypedResults.Ok(dto);
+    if (result.IsFailure)
+    {
+        var error = (ErrorResult<IEnumerable<RoomDto>>)result;
+        return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+    }
+
+    var success = (SuccessResult<IEnumerable<RoomDto>>)result;
+    return TypedResults.Ok<object>(success.Value);
 });
 
 //List hotel bookings
-app.MapGet("/hotels/{hotelId}/bookings", async (
+app.MapGet("/hotels/{hotelId}/bookings", async Task<Results<Ok<object>, BadRequest<object>>> (
     [FromRoute] Guid hotelId,
     [FromServices] IGetHotelBookingsQueryHandler handler,
     CancellationToken cancellationToken) => {
 
     var query = new GetHotelBookingsQuery(hotelId);
-    var dto = await handler.Handle(query, cancellationToken);
+    var result = await handler.Handle(query, cancellationToken);
 
-    return TypedResults.Ok(dto);
+    if (result.IsFailure)
+    {
+        var error = (ErrorResult<IEnumerable<BookingDto>>)result;
+        return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+    }
+
+    var success = (SuccessResult<IEnumerable<BookingDto>>)result;
+    return TypedResults.Ok<object>(success.Value);
 });
 
 // Book a room.
@@ -102,7 +131,6 @@ app.MapPost("/hotels/{hotelId}/bookings", async Task<Results<Created<object>, Ba
     CancellationToken cancellationToken) => {
 
     var command = new CreateBookingCommand(request.Name, request.RoomId, request.From, request.To);
-
     var result = await handler.Handle(command, cancellationToken);
 
     if (result.IsFailure)
@@ -116,7 +144,7 @@ app.MapPost("/hotels/{hotelId}/bookings", async Task<Results<Created<object>, Ba
 });
 
 // Find available hotel rooms between two dates for a given number of people.
-app.MapGet("/rooms/availability-search", async (
+app.MapGet("/rooms/availability-search", async Task<Results<Ok<object>, BadRequest<object>>> (
     [FromQuery] DateTime from,
     [FromQuery] DateTime to,
     [FromQuery] int numberOfPeople,
@@ -124,23 +152,41 @@ app.MapGet("/rooms/availability-search", async (
     CancellationToken cancellationToken) => {
 
     var query = new FindAvailabilityQuery(from, to, numberOfPeople);
+    var result = await handler.Handle(query, cancellationToken);
 
-    var dto = await handler.Handle(query, cancellationToken);
+    if (result.IsFailure)
+    {
+        var error = (ErrorResult<IEnumerable<RoomDto>>)result;
+        return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+    }
 
-    return TypedResults.Ok(dto);
+    var success = (SuccessResult<IEnumerable<RoomDto>>)result;
+    return TypedResults.Ok<object>(success.Value);
 });
 
 //Find booking details based on a booking reference.
-app.MapGet("/bookings/{id}", async (
+app.MapGet("/bookings/{id}", async Task<Results<Ok<object>, BadRequest<object>, NotFound<object>>> (
     [FromRoute(Name = "id")] Guid id,
     [FromServices] IBookingGetQueryHandler handler,
     CancellationToken cancellationToken) => {
-    
+
     var query = new BookingGetQuery(id);
+    var result = await handler.Handle(query, cancellationToken);
 
-    var dto = await handler.Handle(query, cancellationToken);
+    if (result.IsFailure)
+    {
+        var error = (ErrorResult<BookingDto>)result;
 
-    return TypedResults.Ok(dto);
+        if (error.Code == "BOOKING_NOT_FOUND")
+        {
+            return TypedResults.NotFound<object>(new { error.Code, error.Message });
+        }
+
+        return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+    }
+
+    var success = (SuccessResult<BookingDto>)result;
+    return TypedResults.Ok<object>(success.Value);
 });
 
 if (builder.Configuration.GetValue<bool>("Features:AllowSeeding"))
@@ -151,30 +197,36 @@ if (builder.Configuration.GetValue<bool>("Features:AllowSeeding"))
         return TypedResults.Ok("Seeding is enabled.");
     });
 
-    app.MapPost("/data/seed", async (
+    app.MapPost("/data/seed", async Task<Results<Ok, BadRequest<object>>> (
         [FromServices] IDatabaseSeedDataCommandHandler handler,
         CancellationToken cancellationToken) => {
 
         var command = new DatabaseSeedDataCommand();
-
         var result = await handler.Handle(command, cancellationToken);
 
-        return (result == true)
-            ? TypedResults.StatusCode(200)
-            : TypedResults.StatusCode(500);
+        if (result.IsFailure)
+        {
+            var error = (ErrorResult<bool>)result;
+            return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+        }
+
+        return TypedResults.Ok();
     });
 
-    app.MapPost("/data/reset", async (
+    app.MapPost("/data/reset", async Task<Results<Ok, BadRequest<object>>> (
         [FromServices] IDatabaseResetDataCommandHandler handler,
         CancellationToken cancellationToken) => {
 
         var command = new DatabaseResetDataCommand();
-
         var result = await handler.Handle(command, cancellationToken);
 
-        return (result == true)
-            ? TypedResults.StatusCode(200)
-            : TypedResults.StatusCode(500);
+        if (result.IsFailure)
+        {
+            var error = (ErrorResult<bool>)result;
+            return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+        }
+
+        return TypedResults.Ok();
     }); 
 }
 
