@@ -26,16 +26,14 @@ public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
 
         var roomDtos = availableRooms
             .Select(r =>
-            {
-                var dto = new RoomDto
+                new RoomDto
                 {
                     Id = r.Id,
                     Name = r.Name,
                     HotelId = r.HotelId,
-                    HotelName = r.Hotel?.Name
-                };
-                return dto;
-            })
+                    HotelName = r.Hotel.Name
+                }
+            )
             .ToList();
 
         return await Task.FromResult(roomDtos);

@@ -16,16 +16,16 @@ public sealed class HotelGetAllQueryHandler : IHotelGetAllQueryHandler
 
     public async Task<IEnumerable<HotelDto>> Handle(HotelGetAllQuery query, CancellationToken token)
     {
-        var hotels = await dbContext.Hotels.ToListAsync(token);
-
-        return hotels.Select(h =>
-        {
-            var dto = new HotelDto
-            {
-                Id = h.Id,
-                Name = h.Name
-            };
-            return dto;
-        });
+        var hotels = await dbContext.Hotels
+            .Select(h =>
+                new HotelDto
+                {
+                    Id = h.Id,
+                    Name = h.Name
+                }
+            )
+            .ToListAsync(token);
+            
+        return hotels;
     }
 }

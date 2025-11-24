@@ -95,7 +95,7 @@ curl -i -X POST http://localhost:5140/data/seed
 Get Hotels
 
 ```
-curl -i -X GET http://localhost:5140/hotels  
+curl -X GET http://localhost:5140/hotels | jq  
 ```
 
 Search hotel name 
@@ -112,6 +112,10 @@ Search hotel availability
 curl -X GET "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=2" | jq
 ```
 
+```
+curl -X GET "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=4" | jq
+```
+
 Get hotel bookings 
 
 ```
@@ -121,7 +125,7 @@ curl -X GET "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/b
 Book a room TODO
 
 ```
-curl -i -X POST  -H "Content-Type: application/json"  -d '{"name":"Name", "roomId":"00000000-0000-0000-0000-000000000004", "from":"2026-06-05T15:00:00Z", "to":"2026-06-06T11:00:00Z"}' "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/bookings"
+curl -i -X POST  -H "Content-Type: application/json"  -d '{"name":"Booking 2", "roomId":"00000000-0000-0000-0000-000000000004", "from":"2026-06-05T15:00:00Z", "to":"2026-06-06T11:00:00Z"}' "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/bookings"
 ```
 
 ```
@@ -142,17 +146,6 @@ Get Booking TODO
 
 ```
 curl -i -X GET http://localhost:5140/bookings/00000000-0000-0000-0000-000000000000
-```
-
-Response 
-```
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 21 Nov 2025 15:36:56 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"id":"bc32c120-0b06-47fb-88fb-61a6742ada1e","name":"Booking Name"}%     
 ```
 
 Open API Swagger APIs 

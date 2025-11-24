@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Reserve.Application.Dtos;
 using Reserve.Application.Queries;
@@ -18,26 +19,24 @@ public sealed class FindHotelAvailabilityQueryHandler : IFindHotelAvailabilityQu
 
     public async Task<IEnumerable<RoomDto>> Handle(FindHotelAvailabilityQuery query, CancellationToken token)
     {
-        var availableRooms = await dbContext.FindAvailableRooms(
+        var availableRooms = await dbContext.FindHotelAvailableRooms(
             query.Start,
             query.End,
             query.NumberOfPeople,
+            query.HotelId,
             token);
 
         var roomDtos = availableRooms
             .Select(r =>
-            {
-                var dto = new RoomDto
+                new RoomDto
                 {
                     Id = r.Id,
                     Name = r.Name,
                     HotelId = r.HotelId,
-                    HotelName = r.Hotel?.Name
-                };
-                return dto;
-            })
-            .ToList();
+                    HotelName = r.Hotel.Name
+                }
+            );
 
-        return await Task.FromResult(roomDtos);
+        return roomDtos;
     }
 }

@@ -17,7 +17,7 @@ public sealed class BookingGetQueryHandler : IBookingGetQueryHandler
     public async Task<BookingDto> Handle(BookingGetQuery query, CancellationToken token)
     {
         var booking = dbContext.Bookings
-            .First(i => i.Id.Equals(Guid.Parse("2b4161ec-c329-4898-8c7e-3f7234ab9ec9")));
+            .First(i => i.Id.Equals(query.Id));
 
         var model = new BookingDto
         {
