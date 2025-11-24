@@ -9,19 +9,19 @@ public sealed class CreateBookingCommand
 
     public Guid RoomId { get; }
 
-    public DateTimeOffset StartDateTime { get; }
+    public DateTimeOffset Start { get; }
 
-    public DateTimeOffset EndDateTime { get; }
+    public DateTimeOffset End { get; }
 
     public CreateBookingCommand(
         string name,
         Guid roomId,
-        DateTimeOffset startDateTime,
-        DateTimeOffset endDateTime)
+        DateTimeOffset start,
+        DateTimeOffset end)
     {
         this.Name = name;
         this.RoomId = roomId;
-        this.StartDateTime = startDateTime;
-        this.EndDateTime = endDateTime;
+        this.Start = start;
+        this.End = end;
     }
 }

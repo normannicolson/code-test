@@ -69,4 +69,19 @@ public static class ContextExtensions
 
         return availableRooms;
     }
+
+    public static async Task<bool> HasOverlappingBooking(
+        this IContext context,
+        DateTimeOffset start,
+        DateTimeOffset end,
+        Guid roomId,
+        CancellationToken cancellationToken = default)
+    {
+        // Check if the room has any overlapping bookings
+        var hasOverlappingBooking = await context.BookingRooms
+            .Where(br => br.RoomId == roomId)
+            .AnyAsync(br => br.Booking.Start <= end && br.Booking.End >= start, cancellationToken);
+            
+        return hasOverlappingBooking;
+    }   
 }
