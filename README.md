@@ -132,7 +132,7 @@ Get hotel bookings
 curl -X GET "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/bookings" | jq
 ```
 
-Book a room TODO
+Book a room
 
 ```
 curl -i -X POST  -H "Content-Type: application/json"  -d '{"name":"Booking 2", "roomId":"00000000-0000-0000-0000-000000000004", "from":"2026-06-05T15:00:00Z", "to":"2026-06-06T11:00:00Z"}' "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/bookings"
@@ -143,7 +143,19 @@ curl -i -X POST  -H "Content-Type: application/json"  -d '{"name":"Booking 2", "
 Get available rooms across hotels 
 
 ```
-curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=4" | jq
+curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=2" | jq
+```
+
+Get available rooms across hotels next night
+
+```
+curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-06T15:00:00Z&to=2026-06-07T11:00:00Z&numberofpeople=2" | jq
+```
+
+Get available rooms across weekend
+
+```
+curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-07T11:00:00Z&numberofpeople=2" | jq
 ```
 
 No rooms for occupants
@@ -152,10 +164,18 @@ No rooms for occupants
 curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=5" | jq
 ```
 
-Get Booking TODO
+Get Booking
 
 ```
-curl -i -X GET http://localhost:5140/bookings/00000000-0000-0000-0000-000000000000
+curl -i -X GET http://localhost:5140/bookings/2b4161ec-c329-4898-8c7e-3f7234ab9ec9
+```
+
+get new booking 
+
+```
+id="f2dc019f-26f3-4b1e-a73f-f690684b9ab0"
+
+curl -i -X GET "http://localhost:5140/bookings/$id"
 ```
 
 Open API Swagger APIs 
