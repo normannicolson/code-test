@@ -12,6 +12,8 @@ using Reserve.Application.QueryHandlers;
 using Reserve.Infrastructure.Data;
 using Reserve.Infrastructure.Data.QueryHandlers;
 using Reserve.Presentation.Api.Models;
+using Reserve.Application.Results;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,16 +99,24 @@ app.MapGet("/hotels/{hotelId}/bookings", async (
 });
 
 // Book a room.
-app.MapPost("/hotels/{hotelId}/bookings", async (
+app.MapPost("/hotels/{hotelId}/bookings", async Task<Results<Created<object>, BadRequest<object>>> (
     [FromRoute] Guid hotelId,
     [FromBody] CreateBookingRequest request,
     [FromServices] ICreateBookingCommandHandler handler,
     CancellationToken cancellationToken) => {
 
     var command = new CreateBookingCommand(request.Name, request.RoomId, request.From, request.To);
-    var bookingId = await handler.Handle(command, cancellationToken);
 
-    return TypedResults.Created($"/bookings/{bookingId}", new { Id = bookingId });
+    var result = await handler.Handle(command, cancellationToken);
+
+    if (result.IsFailure)
+    {
+        var error = (ErrorResult<Guid>)result;
+        return TypedResults.BadRequest<object>(new { error.Code, error.Message });
+    }
+
+    var success = (SuccessResult<Guid>)result;
+    return TypedResults.Created($"/bookings/{success.Value}", (object)success.Value);
 });
 
 // Find available hotel rooms between two dates for a given number of people.

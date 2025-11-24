@@ -118,13 +118,21 @@ Get hotel bookings
 curl -X GET "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/bookings" | jq
 ```
 
-Book a room TODO 
+Book a room TODO
 
+```
+curl -i -X POST  -H "Content-Type: application/json"  -d '{"name":"Name", "roomId":"00000000-0000-0000-0000-000000000004", "from":"2026-06-05T15:00:00Z", "to":"2026-06-06T11:00:00Z"}' "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/bookings"
 ```
 
 ```
 
 Get available rooms across hotels 
+
+```
+curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=4" | jq
+```
+
+No rooms for occupants
 
 ```
 curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=5" | jq

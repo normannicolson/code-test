@@ -1,8 +1,9 @@
 using Reserve.Application.Commands;
+using Reserve.Application.Results;
 
 namespace Reserve.Application.CommandHandlers;
 
 public interface ICreateBookingCommandHandler
 {
-    Task<Guid> Handle(CreateBookingCommand command, CancellationToken token);
+    Task<Result<Guid>> Handle(CreateBookingCommand command, CancellationToken token);
 }
