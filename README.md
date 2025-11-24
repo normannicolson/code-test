@@ -65,6 +65,14 @@ Your solution must allow an API consumer to perform the following:
     the deliverable.
 - The API requires no authentication.
 
+## From repo root folder
+
+```
+docker build --platform linux/amd64 -f src/Reserve.Presentation.Api/Dockerfile -t reserve-api:1.0.0 .
+
+docker run -p 8080:80 -it --platform linux/amd64 --name reserve-api reserve-api:latest
+```
+
 ## Run Application 
 
 from ```src``` folder
