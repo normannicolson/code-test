@@ -8,7 +8,6 @@ namespace Reserve.Infrastructure.Data.Entities;
     {
         public required Guid Id { get; set; }
 
-        [StringLength(256)]
         public required string Name { get; set; }
 
         public required DateTimeOffset Start { get; set; }

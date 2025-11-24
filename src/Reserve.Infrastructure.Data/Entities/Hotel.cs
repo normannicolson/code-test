@@ -8,7 +8,6 @@ public class Hotel
 {
     public required Guid Id { get; set; }
 
-    [StringLength(256)]
     public required string Name { get; set; }
 
     public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();

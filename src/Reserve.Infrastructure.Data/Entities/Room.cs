@@ -11,7 +11,6 @@ public class Room
 
     public required string Name { get; set; }
 
-    [StringLength(256)]
     public required DateTimeOffset Start { get; set; }
 
     public required DateTimeOffset End { get; set; }
