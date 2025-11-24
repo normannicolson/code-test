@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Reserve.Application.CommandHandlers.Data;
 using Reserve.Application.Commands.Data;
 
-namespace Reserve.Infrastructure.Data.Data;
+namespace Reserve.Infrastructure.Data.CommandHandlers.Data;
 
 public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
 {

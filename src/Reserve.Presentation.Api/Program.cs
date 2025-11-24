@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Reserve.Application.CommandHandlers;
 using Reserve.Application.CommandHandlers.Data;
+using Reserve.Application.Commands;
 using Reserve.Application.Commands.Data;
 using Reserve.Application.Queries;
+using Reserve.Infrastructure.Data.CommandHandlers;
+using Reserve.Infrastructure.Data.CommandHandlers.Data;
 using Reserve.Application.QueryHandlers;
 using Reserve.Infrastructure.Data;
-using Reserve.Infrastructure.Data.Data;
 using Reserve.Infrastructure.Data.QueryHandlers;
+using Reserve.Presentation.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +34,8 @@ builder.Services.AddScoped<IBookingGetQueryHandler, BookingGetQueryHandler>();
 builder.Services.AddScoped<IDatabaseSeedDataCommandHandler, DatabaseSeedDataCommandHandler>();
 builder.Services.AddScoped<IDatabaseResetDataCommandHandler, DatabaseResetDataCommandHandler>();
 
+builder.Services.AddScoped<ICreateBookingCommandHandler, CreateBookingCommandHandler>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -43,7 +49,6 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Reserve API is running!");
 
-//List hotels
 app.MapGet("/hotels", async (
     [FromServices] IHotelGetAllQueryHandler handler,
     CancellationToken cancellationToken) => {
@@ -54,7 +59,6 @@ app.MapGet("/hotels", async (
     return TypedResults.Ok(dto);
 });
 
-//Find a hotel based on its name.
 app.MapGet("/hotels/search", async (
     [FromQuery] string name,
     [FromServices] IHotelSearchQueryHandler handler,
@@ -63,12 +67,9 @@ app.MapGet("/hotels/search", async (
     var query = new HotelSearchQuery(name);
     var dto = await handler.Handle(query, cancellationToken);
 
-    return dto != null
-        ? TypedResults.Ok(dto)
-        : Results.NotFound($"Hotel with name containing '{name}' not found");
+    return TypedResults.Ok(dto);
 });
 
-// Find available hotel rooms between two dates for a given number of people.
 app.MapGet("/hotels/{hotelId}/rooms/availability-search", async (
     [FromRoute] Guid hotelId,
     [FromQuery] DateTime from,
@@ -78,7 +79,6 @@ app.MapGet("/hotels/{hotelId}/rooms/availability-search", async (
     CancellationToken cancellationToken) => {
 
     var query = new FindHotelAvailabilityQuery(hotelId, from, to, numberOfPeople);
-
     var dto = await handler.Handle(query, cancellationToken);
 
     return TypedResults.Ok(dto);
@@ -98,13 +98,16 @@ app.MapGet("/hotels/{hotelId}/bookings", async (
 
 
 // Book a room.
-app.MapPost("/hotels/{hotelId}/bookings", ([FromRoute] Guid hotelId) => {
+app.MapPost("/hotels/{hotelId}/bookings", async (
+    [FromRoute] Guid hotelId,
+    [FromBody] CreateBookingRequest request,
+    [FromServices] ICreateBookingCommandHandler handler,
+    CancellationToken cancellationToken) => {
 
-    //Room Id
+    var command = new CreateBookingCommand(request.Name, request.RoomId, request.From, request.To);
+    var bookingId = await handler.Handle(command, cancellationToken);
 
-    //Slots Ids
-
-    return Results.Ok("Book a room.");
+    return TypedResults.Created($"/bookings/{bookingId}", new { Id = bookingId });
 });
 
 // Find available hotel rooms between two dates for a given number of people.

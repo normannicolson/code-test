@@ -14,20 +14,17 @@ public sealed class HotelSearchQueryHandler : IHotelSearchQueryHandler
         this.dbContext = dbContext;
     }
 
-    public async Task<HotelDto?> Handle(HotelSearchQuery query, CancellationToken token)
+    public async Task<IEnumerable<HotelDto>> Handle(HotelSearchQuery query, CancellationToken token)
     {
-        var hotel = await dbContext.Hotels
-            .FirstOrDefaultAsync(h => h.Name.Contains(query.Name), token);
+        var hotels = await dbContext.Hotels
+            .Where(h => h.Name.Contains(query.Name))
+            .Select(r => new HotelDto
+            {
+                Id = r.Id,
+                Name = r.Name
+            })
+            .ToListAsync(token);
 
-        if (hotel == null)
-        {
-            return null;
-        }
-
-        return new HotelDto
-        {
-            Id = hotel.Id,
-            Name = hotel.Name
-        };
+        return hotels;
     }
 }

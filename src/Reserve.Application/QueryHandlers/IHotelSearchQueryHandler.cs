@@ -5,5 +5,5 @@ namespace Reserve.Application.QueryHandlers;
 
 public interface IHotelSearchQueryHandler
 {
-    Task<HotelDto?> Handle(HotelSearchQuery query, CancellationToken token);
+    Task<IEnumerable<HotelDto>> Handle(HotelSearchQuery query, CancellationToken token);
 }
