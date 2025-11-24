@@ -96,7 +96,6 @@ app.MapGet("/hotels/{hotelId}/bookings", async (
     return TypedResults.Ok(dto);
 });
 
-
 // Book a room.
 app.MapPost("/hotels/{hotelId}/bookings", async (
     [FromRoute] Guid hotelId,

@@ -25,6 +25,7 @@ public class DatabaseResetDataCommandHandler : IDatabaseResetDataCommandHandler
             DELETE FROM Slots;
             DELETE FROM Rooms;
             DELETE FROM Hotels;
+            DELETE FROM RoomTypes;
             ";
 
         var rowsModified = context.Database.ExecuteSqlRaw(sql);

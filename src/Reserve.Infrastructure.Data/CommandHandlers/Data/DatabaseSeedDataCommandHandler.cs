@@ -17,6 +17,7 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
     {
         var sql = @"
             DECLARE @hotel1 UNIQUEIDENTIFIER = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
+            DECLARE @hotel2 UNIQUEIDENTIFIER = 'b2c3d4e5-f6a7-8901-bcde-f23456789012';
 
             DECLARE @room1 UNIQUEIDENTIFIER = 'd4ed1b54-6c29-4a94-9c8f-7f5a36f3d601';
             DECLARE @room2 UNIQUEIDENTIFIER = '94a6bf17-65e3-4c78-9bf0-96c8cba5b2b4';
@@ -45,25 +46,36 @@ public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
             DELETE FROM Slots
             DELETE FROM Rooms
             DELETE FROM Hotels
+            DELETE FROM RoomTypes
+
+            ------------------------------------------------------------
+            -- Room Types
+            ------------------------------------------------------------
+            INSERT INTO RoomTypes (Id, DisplayName, MaxOccupancy)
+            VALUES
+                ('Single', 'Single Room', 1),
+                ('Double', 'Double Room', 2),
+                ('Deluxe', 'Deluxe Room', 4)
 
             ------------------------------------------------------------
             -- Hotels
             ------------------------------------------------------------
             INSERT INTO Hotels (Id, Name)
             VALUES
-                (@hotel1, 'Grand Reserve Hotel');
+                (@hotel1, 'Grand Reserve Hotel'),
+                (@hotel2, 'Hotel Bristol');
 
             ------------------------------------------------------------
-            -- Rooms (Rooms linked to Hotel)
+            -- Rooms (Rooms linked to Hotel and RoomType)
             ------------------------------------------------------------
-            INSERT INTO Rooms (Id, Name, [Start], [End], HotelId)
+            INSERT INTO Rooms (Id, Name, [Start], [End], HotelId, RoomTypeId)
             VALUES
-                (@room1, 'Room 1', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
-                (@room2, 'Room 2', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
-                (@room3, 'Room 3', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
-                (@room4, 'Room 4', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
-                (@room5, 'Room 5', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1),
-                (@room6, 'Room 6', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1);
+                (@room1, 'Room 101', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1, 'Deluxe'),
+                (@room2, 'Room 102', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1, 'Deluxe'),
+                (@room3, 'Room 103', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1, 'Double'),
+                (@room4, 'Room 104', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1, 'Double'),
+                (@room5, 'Room 105', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1, 'Single'),
+                (@room6, 'Room 106', '2026-03-27T00:00:00', '2027-03-27T00:00:00', @hotel1, 'Single');
 
             ------------------------------------------------------------
             -- Slots

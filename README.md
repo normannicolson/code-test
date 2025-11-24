@@ -77,6 +77,21 @@ dotnet run --project Reserve.Presentation.Api
 curl -i -X GET http://localhost:5140
 ```
 
+Check if seen toggle on 
+```
+curl -i -X GET http://localhost:5140/data/info 
+```
+
+Reset seed data 
+```
+curl -i -X POST http://localhost:5140/data/reset 
+```
+
+Seed data 
+```
+curl -i -X POST http://localhost:5140/data/seed 
+```
+
 Get Hotels
 
 ```
@@ -88,9 +103,34 @@ Search hotel name
 ```
 curl -i -X GET "http://localhost:5140/hotels/search?name=Grand"
 curl -i -X GET "http://localhost:5140/hotels/search?name=Bristol"
+curl -i -X GET "http://localhost:5140/hotels/search?name=Nothing"
 ```
 
-Get Booking
+Search hotel availability 
+
+```
+curl -X GET "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=2" | jq
+```
+
+Get hotel bookings 
+
+```
+curl -X GET "http://localhost:5140/hotels/a1b2c3d4-e5f6-7890-abcd-ef1234567890/bookings" | jq
+```
+
+Book a room TODO 
+
+```
+
+```
+
+Get available rooms across hotels 
+
+```
+curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=5" | jq
+```
+
+Get Booking TODO
 
 ```
 curl -i -X GET http://localhost:5140/bookings/00000000-0000-0000-0000-000000000000
@@ -107,38 +147,11 @@ Transfer-Encoding: chunked
 {"id":"bc32c120-0b06-47fb-88fb-61a6742ada1e","name":"Booking Name"}%     
 ```
 
-Get available rooms
-
-```
-curl -i -X GET "http://localhost:5140/rooms/search?from=2026-06-05T15:00:00Z&to=2026-06-06T11:00:00Z&numberofpeople=2"
-```
-
-One rooms available 
-
-```
-curl -X GET "http://localhost:5140/rooms/search?from=2026-06-05T15:00:00Z&to=2026-06-07T11:00:00Z&numberofpeople=2" | jq
-```
-
-Both rooms available 
-
-```
-curl -X GET "http://localhost:5140/rooms/search?from=2026-06-06T15:00:00Z&to=2026-06-07T11:00:00Z&numberofpeople=2" | jq
-```
-
 Open API Swagger APIs 
 
 http://localhost:5140/openapi/v1.json
 
 http://localhost:5140/swagger/index.html
-
-Seeding 
-
-curl -i -X POST http://localhost:5140/data/seed
-
-Reset 
-
-curl -i -X POST http://localhost:5140/data/reset
-
 
 ### Run tests 
 
