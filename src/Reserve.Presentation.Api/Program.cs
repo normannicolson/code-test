@@ -22,6 +22,8 @@ builder.Services.AddScoped<IHotelGetAllQueryHandler, HotelGetAllQueryHandler>();
 builder.Services.AddScoped<IHotelSearchQueryHandler, HotelSearchQueryHandler>();
 
 builder.Services.AddScoped<IFindAvailabilityQueryHandler, FindAvailabilityQueryHandler>();
+builder.Services.AddScoped<IFindHotelAvailabilityQueryHandler, FindHotelAvailabilityQueryHandler>();
+builder.Services.AddScoped<IFindHotelBookingsQueryHandler, FindHotelBookingsQueryHandler>();
 
 builder.Services.AddScoped<IBookingGetQueryHandler, BookingGetQueryHandler>();
 
@@ -41,6 +43,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Reserve API is running!");
 
+//List hotels
 app.MapGet("/hotels", async (
     [FromServices] IHotelGetAllQueryHandler handler,
     CancellationToken cancellationToken) => {
@@ -65,8 +68,8 @@ app.MapGet("/hotels/search", async (
         : Results.NotFound($"Hotel with name containing '{name}' not found");
 });
 
-// Find available rooms between two dates for a given number of people.
-app.MapGet("/hotels/{hotelId}/rooms/search", async (
+// Find available hotel rooms between two dates for a given number of people.
+app.MapGet("/hotels/{hotelId}/rooms/availability-search", async (
     [FromRoute] Guid hotelId,
     [FromQuery] DateTime from,
     [FromQuery] DateTime to,
@@ -81,6 +84,19 @@ app.MapGet("/hotels/{hotelId}/rooms/search", async (
     return TypedResults.Ok(dto);
 });
 
+//List hotel bookings
+app.MapGet("/hotels/{hotelId}/bookings", async (
+    [FromRoute] Guid hotelId,
+    [FromServices] IFindHotelBookingsQueryHandler handler,
+    CancellationToken cancellationToken) => {
+
+    var query = new FindHotelBookingsQuery(hotelId);
+    var dto = await handler.Handle(query, cancellationToken);
+
+    return TypedResults.Ok(dto);
+});
+
+
 // Book a room.
 app.MapPost("/hotels/{hotelId}/bookings", ([FromRoute] Guid hotelId) => {
 
@@ -89,6 +105,21 @@ app.MapPost("/hotels/{hotelId}/bookings", ([FromRoute] Guid hotelId) => {
     //Slots Ids
 
     return Results.Ok("Book a room.");
+});
+
+// Find available hotel rooms between two dates for a given number of people.
+app.MapGet("/rooms/availability-search", async (
+    [FromQuery] DateTime from,
+    [FromQuery] DateTime to,
+    [FromQuery] int numberOfPeople,
+    [FromServices] IFindAvailabilityQueryHandler handler,
+    CancellationToken cancellationToken) => {
+
+    var query = new FindAvailabilityQuery(from, to, numberOfPeople);
+
+    var dto = await handler.Handle(query, cancellationToken);
+
+    return TypedResults.Ok(dto);
 });
 
 //Find booking details based on a booking reference.
