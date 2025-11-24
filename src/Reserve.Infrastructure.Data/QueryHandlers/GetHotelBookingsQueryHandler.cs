@@ -7,16 +7,16 @@ using Reserve.Infrastructure.Data;
 
 namespace Reserve.Infrastructure.Data.QueryHandlers;
 
-public sealed class FindHotelBookingsQueryHandler : IFindHotelBookingsQueryHandler
+public sealed class GetHotelBookingsQueryHandler : IGetHotelBookingsQueryHandler
 {
     IContext dbContext;
 
-    public FindHotelBookingsQueryHandler(IContext dbContext)
+    public GetHotelBookingsQueryHandler(IContext dbContext)
     {
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<BookingDto>> Handle(FindHotelBookingsQuery query, CancellationToken token)
+    public async Task<IEnumerable<BookingDto>> Handle(GetHotelBookingsQuery query, CancellationToken token)
     {
         var bookings = await dbContext.BookingRooms
             .Where(br => br.Room.HotelId == query.HotelId)

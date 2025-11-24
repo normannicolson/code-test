@@ -2,7 +2,7 @@ using System;
 
 namespace Reserve.Application.Queries;
 
-public sealed record BookingGetQuery
+public sealed class BookingGetQuery
 {
     public Guid Id { get; }
 

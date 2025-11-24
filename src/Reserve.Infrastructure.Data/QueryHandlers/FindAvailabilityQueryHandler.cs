@@ -18,11 +18,12 @@ public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
 
     public async Task<IEnumerable<RoomDto>> Handle(FindAvailabilityQuery query, CancellationToken token)
     {
-        var availableRooms = await dbContext.FindAvailableRooms(
-            query.Start,
-            query.End,
-            query.NumberOfPeople,
-            token);
+        var availableRooms = await dbContext
+            .FindAvailableRooms(
+                query.Start,
+                query.End,
+                query.NumberOfPeople,
+                token);
 
         var roomDtos = availableRooms
             .Select(r =>

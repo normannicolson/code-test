@@ -16,8 +16,8 @@ public sealed class HotelSearchQueryHandler : IHotelSearchQueryHandler
 
     public async Task<IEnumerable<HotelDto>> Handle(HotelSearchQuery query, CancellationToken token)
     {
-        var hotels = await dbContext.Hotels
-            .Where(h => h.Name.Contains(query.Name))
+        var hotels = await dbContext
+            .FindHotel(query.Name, token)
             .Select(r => new HotelDto
             {
                 Id = r.Id,

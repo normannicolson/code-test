@@ -84,4 +84,47 @@ public static class ContextExtensions
             
         return hasOverlappingBooking;
     }   
+
+    public static IQueryable<Hotel> GetHotels(
+        this IContext context)
+    {
+        var hotels = context.Hotels;
+        
+        return hotels;
+    }
+
+
+    public static IQueryable<Hotel> FindHotel(
+        this IContext context,
+        string name, 
+        CancellationToken cancellationToken)
+    {
+        var hotels = context.Hotels
+            .Where(i => i.Name.Contains(name));
+        
+        return hotels;
+    }
+
+    public static async Task<Booking> GetBooking(
+        this IContext context,
+        Guid id, 
+        CancellationToken cancellationToken)
+    {
+        var booking = await context.Bookings
+            .FirstAsync(i => i.Id.Equals(id), cancellationToken);
+        
+        return booking;
+    }
+
+
+            // var bookings = await dbContext.BookingRooms
+            // .Where(br => br.Room.HotelId == query.HotelId)
+            // .Select(br => br.Booking)
+            // .Distinct()
+            // .Select(b => new BookingDto
+            // {
+            //     Id = b.Id,
+            //     Name = b.Name
+            // })
+            // .ToListAsync(token);
 }

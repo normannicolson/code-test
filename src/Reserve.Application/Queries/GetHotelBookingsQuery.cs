@@ -2,11 +2,11 @@ using System;
 
 namespace Reserve.Application.Queries;
 
-public sealed record FindHotelBookingsQuery
+public sealed record GetHotelBookingsQuery
 {
     public Guid HotelId { get; }
 
-    public FindHotelBookingsQuery(Guid hotelId)
+    public GetHotelBookingsQuery(Guid hotelId)
     {
         this.HotelId = hotelId;
     }

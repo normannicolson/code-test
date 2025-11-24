@@ -19,12 +19,13 @@ public sealed class FindHotelAvailabilityQueryHandler : IFindHotelAvailabilityQu
 
     public async Task<IEnumerable<RoomDto>> Handle(FindHotelAvailabilityQuery query, CancellationToken token)
     {
-        var availableRooms = await dbContext.FindHotelAvailableRooms(
-            query.Start,
-            query.End,
-            query.NumberOfPeople,
-            query.HotelId,
-            token);
+        var availableRooms = await dbContext
+            .FindHotelAvailableRooms(
+                query.Start,
+                query.End,
+                query.NumberOfPeople,
+                query.HotelId,
+                token);
 
         var roomDtos = availableRooms
             .Select(r =>

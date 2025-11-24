@@ -26,17 +26,16 @@ builder.Services.AddDbContext<IContext, Context>(options =>
 
 builder.Services.AddScoped<IHotelGetAllQueryHandler, HotelGetAllQueryHandler>();
 builder.Services.AddScoped<IHotelSearchQueryHandler, HotelSearchQueryHandler>();
-
 builder.Services.AddScoped<IFindAvailabilityQueryHandler, FindAvailabilityQueryHandler>();
 builder.Services.AddScoped<IFindHotelAvailabilityQueryHandler, FindHotelAvailabilityQueryHandler>();
-builder.Services.AddScoped<IFindHotelBookingsQueryHandler, FindHotelBookingsQueryHandler>();
+builder.Services.AddScoped<IGetHotelBookingsQueryHandler, GetHotelBookingsQueryHandler>();
 
 builder.Services.AddScoped<IBookingGetQueryHandler, BookingGetQueryHandler>();
 
+builder.Services.AddScoped<ICreateBookingCommandHandler, CreateBookingCommandHandler>();
+
 builder.Services.AddScoped<IDatabaseSeedDataCommandHandler, DatabaseSeedDataCommandHandler>();
 builder.Services.AddScoped<IDatabaseResetDataCommandHandler, DatabaseResetDataCommandHandler>();
-
-builder.Services.AddScoped<ICreateBookingCommandHandler, CreateBookingCommandHandler>();
 
 var app = builder.Build();
 
@@ -89,10 +88,10 @@ app.MapGet("/hotels/{hotelId}/rooms/availability-search", async (
 //List hotel bookings
 app.MapGet("/hotels/{hotelId}/bookings", async (
     [FromRoute] Guid hotelId,
-    [FromServices] IFindHotelBookingsQueryHandler handler,
+    [FromServices] IGetHotelBookingsQueryHandler handler,
     CancellationToken cancellationToken) => {
 
-    var query = new FindHotelBookingsQuery(hotelId);
+    var query = new GetHotelBookingsQuery(hotelId);
     var dto = await handler.Handle(query, cancellationToken);
 
     return TypedResults.Ok(dto);

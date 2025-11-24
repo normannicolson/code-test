@@ -16,7 +16,8 @@ public sealed class HotelGetAllQueryHandler : IHotelGetAllQueryHandler
 
     public async Task<IEnumerable<HotelDto>> Handle(HotelGetAllQuery query, CancellationToken token)
     {
-        var hotels = await dbContext.Hotels
+        var hotels = await dbContext
+            .GetHotels()
             .Select(h =>
                 new HotelDto
                 {

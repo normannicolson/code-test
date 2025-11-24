@@ -16,8 +16,8 @@ public sealed class BookingGetQueryHandler : IBookingGetQueryHandler
 
     public async Task<BookingDto> Handle(BookingGetQuery query, CancellationToken token)
     {
-        var booking = dbContext.Bookings
-            .First(i => i.Id.Equals(query.Id));
+        var booking = await dbContext
+            .GetBooking(query.Id, token);
 
         var model = new BookingDto
         {
@@ -25,6 +25,6 @@ public sealed class BookingGetQueryHandler : IBookingGetQueryHandler
             Name = booking.Name
         };
 
-        return await Task.FromResult(model);
+        return model;
     }
 }
