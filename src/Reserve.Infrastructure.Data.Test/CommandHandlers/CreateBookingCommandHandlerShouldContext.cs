@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 using Reserve.Application.Commands;
 using Reserve.Application.Results;
 using Reserve.Infrastructure.Data.CommandHandlers;
@@ -13,12 +15,16 @@ namespace Reserve.Infrastructure.Data.Test.CommandHandlers;
 
 public class CreateBookingCommandHandlerShouldContext
 {
+    private Moq.Mock<ILogger<CreateBookingCommandHandler>> loggerMock;
+
     private Context Context { get; }
 
     private Result<Guid>? Result { get; set; } = null;
 
     public CreateBookingCommandHandlerShouldContext()
     {
+        this.loggerMock = new Moq.Mock<ILogger<CreateBookingCommandHandler>>();
+
         var databaseName = DateTime.UtcNow.Ticks.ToString();
 
         var options = new DbContextOptionsBuilder<Context>()
@@ -222,7 +228,7 @@ public class CreateBookingCommandHandlerShouldContext
         var room = Context.Rooms.First(i => i.Name.Equals(roomName));
 
         var command = new CreateBookingCommand(name, room.Id, start, end);
-        var handler = new CreateBookingCommandHandler(this.Context);
+        var handler = new CreateBookingCommandHandler(this.Context, this.loggerMock.Object);
 
         this.Result = await handler.Handle(command, CancellationToken.None);
 

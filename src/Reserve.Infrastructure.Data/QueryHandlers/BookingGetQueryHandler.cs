@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Reserve.Application.Dtos;
 using Reserve.Application.Queries;
 using Reserve.Application.Results;
@@ -10,10 +11,12 @@ namespace Reserve.Application.QueryHandlers;
 public sealed class BookingGetQueryHandler : IBookingGetQueryHandler
 {
     IContext dbContext;
+    ILogger<BookingGetQueryHandler> logger;
 
-    public BookingGetQueryHandler(IContext dbContext)
+    public BookingGetQueryHandler(IContext dbContext, ILogger<BookingGetQueryHandler> logger)
     {
         this.dbContext = dbContext;
+        this.logger = logger;
     }
 
     public async Task<Result<BookingDto>> Handle(BookingGetQuery query, CancellationToken token)

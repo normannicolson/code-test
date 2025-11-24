@@ -1,5 +1,6 @@
 using Microsoft.Build.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Reserve.Application.CommandHandlers;
 using Reserve.Application.Commands;
 using Reserve.Application.Results;
@@ -9,11 +10,14 @@ namespace Reserve.Infrastructure.Data.CommandHandlers;
 
 public sealed class CreateBookingCommandHandler : ICreateBookingCommandHandler
 {
+    private readonly ILogger<CreateBookingCommandHandler> logger;
+    
     private readonly Context context;
 
-    public CreateBookingCommandHandler(Context context)
+    public CreateBookingCommandHandler(Context context, ILogger<CreateBookingCommandHandler> logger)
     {
         this.context = context;
+        this.logger = logger;
     }
 
     public async Task<Result<Guid>> Handle(CreateBookingCommand command, CancellationToken token)

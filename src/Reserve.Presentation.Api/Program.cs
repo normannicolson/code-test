@@ -15,11 +15,14 @@ using Reserve.Infrastructure.Data.QueryHandlers;
 using Reserve.Presentation.Api.Models;
 using Reserve.Application.Results;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<Context>();
+
+builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
@@ -50,7 +53,12 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.MapGet("/", () => "Reserve API is running!");
+app.MapGet("/", (ILogger<Program> logger) => { 
+
+    logger.LogInformation("Reserve API accessed at root endpoint.");
+
+    return "Reserve API is running!";
+});
 
 app.MapGet("/hotels", async Task<Results<Ok<object>, BadRequest<object>>> (
     [FromServices] IHotelGetAllQueryHandler handler,

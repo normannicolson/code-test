@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Reserve.Application.CommandHandlers.Data;
 using Reserve.Application.Commands.Data;
 using Reserve.Application.Results;
@@ -8,10 +9,13 @@ namespace Reserve.Infrastructure.Data.CommandHandlers.Data;
 public class DatabaseSeedDataCommandHandler : IDatabaseSeedDataCommandHandler
 {
     private readonly Context context;
+    
+    private readonly ILogger<DatabaseSeedDataCommandHandler> logger;
 
-    public DatabaseSeedDataCommandHandler(Context context)
+    public DatabaseSeedDataCommandHandler(Context context, ILogger<DatabaseSeedDataCommandHandler> logger)
     {
         this.context = context;
+        this.logger = logger;
     }
 
     public Task<Result<bool>> Handle(DatabaseSeedDataCommand command, CancellationToken token)

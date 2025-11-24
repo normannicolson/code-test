@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reserve.Presentation.Api\Reserve.Presentation.Api.csproj" />
+    <ProjectReference Include="..\Reserve.Infrastructure.Telemetry\Reserve.Infrastructure.Telemetry.csproj" />
   </ItemGroup>
-
+  
 </Project>

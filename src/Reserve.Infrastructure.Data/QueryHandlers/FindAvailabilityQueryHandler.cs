@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Reserve.Application.Dtos;
 using Reserve.Application.Queries;
 using Reserve.Application.QueryHandlers;
@@ -11,10 +12,12 @@ namespace Reserve.Infrastructure.Data.QueryHandlers;
 public sealed class FindAvailabilityQueryHandler : IFindAvailabilityQueryHandler
 {
     IContext dbContext;
+    ILogger<FindAvailabilityQueryHandler> logger;
 
-    public FindAvailabilityQueryHandler(IContext dbContext)
+    public FindAvailabilityQueryHandler(IContext dbContext, ILogger<FindAvailabilityQueryHandler> logger)
     {
         this.dbContext = dbContext;
+        this.logger = logger;
     }
 
     public async Task<Result<IEnumerable<RoomDto>>> Handle(FindAvailabilityQuery query, CancellationToken token)
