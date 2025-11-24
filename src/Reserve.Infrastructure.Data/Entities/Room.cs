@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Reserve.Core;
 
 namespace Reserve.Infrastructure.Data.Entities;
 
@@ -16,6 +17,8 @@ public class Room
     public required DateTimeOffset End { get; set; }
 
     public Guid? HotelId { get; set; }
+
+    public required RoomType RoomType { get; set; }
 
     public virtual Hotel? Hotel { get; set; }
 

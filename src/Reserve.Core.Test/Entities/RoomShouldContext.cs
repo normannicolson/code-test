@@ -1,4 +1,5 @@
 using System;
+using Reserve.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Reserve.Core.Test.Entities;
@@ -13,9 +14,10 @@ public class RoomShouldContext
         long version,
         string name,
         DateTimeOffset start,
-        DateTimeOffset end)
+        DateTimeOffset end,
+        RoomType roomType)
     {
-        this.room = new Reserve.Core.Entities.Room(id, version, name, start, end);
+        this.room = new Reserve.Core.Entities.Room(id, version, name, start, end, roomType);
         return this;
     }
 

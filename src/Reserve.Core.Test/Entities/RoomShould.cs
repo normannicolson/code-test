@@ -1,4 +1,5 @@
 using System;
+using Reserve.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Reserve.Core.Test.Entities;
@@ -14,9 +15,10 @@ public class RoomShould
         var name = "Test Room";
         var start = DateTimeOffset.UtcNow;
         var end = DateTimeOffset.UtcNow.AddHours(1);
+        var roomType = RoomType.Double;
 
         new RoomShouldContext()
-            .WhenCreateRoomInstance(id, version, name, start, end)
+            .WhenCreateRoomInstance(id, version, name, start, end, roomType)
             .ThenIdIs(id)
             .ThenVersionIs(1L)
             .ThenNameIs("Test Room")

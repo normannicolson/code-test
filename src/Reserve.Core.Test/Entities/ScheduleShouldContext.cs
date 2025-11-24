@@ -33,7 +33,7 @@ public class ScheduleShouldContext
 
     public ScheduleShouldContext GivenScheduleRoom(string name, long version, DateTimeOffset start, DateTimeOffset end)
     {
-        var room = new Reserve.Core.Entities.Room(Guid.NewGuid(), version, name, start, end);
+        var room = new Reserve.Core.Entities.Room(Guid.NewGuid(), version, name, start, end, RoomType.Double);
 
         this.sut.Rooms.Add(room);
 

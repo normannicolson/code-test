@@ -261,6 +261,27 @@ erDiagram
 
 ### Create Database 
 
+From rep route  
+
+Create migration
+
+```
+dotnet ef migrations add CreateDatabase \
+  --project src/Reserve.Infrastructure.Data \
+  --startup-project src/Reserve.Presentation.Api
+```
+
+Create 
+
+```
+dotnet ef migrations script  \
+  --project src/Reserve.Infrastructure.Data \
+  --startup-project src/Reserve.Presentation.Api \
+  --verbose \
+  --idempotent \ 
+  --verbose \
+  --output Reserve.Infrastructure.Database\database.sql
+```
 
 ### Used Claude Code to add Hotel enitiy 
 

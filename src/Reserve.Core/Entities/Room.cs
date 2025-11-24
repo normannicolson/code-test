@@ -15,17 +15,21 @@ public class Room : IEntity
 
     public DateTimeOffset End { get; set; }
 
+    public RoomType RoomType { get; set; }
+
     public Room(
         Guid id,
         long version,
         string name,
         DateTimeOffset start,
-        DateTimeOffset end)
+        DateTimeOffset end,
+        RoomType roomType)
     {
         this.Id = id;
         this.Version = version;
         this.Name = name;
         this.Start = start;
         this.End = end;
+        this.RoomType = roomType;
     }
 }

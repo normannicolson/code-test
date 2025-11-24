@@ -24,16 +24,29 @@ public class ContextShouldContext
             .Options;
 
         this.Context = new Context(options);
+
+        this.Context.RoomTypes.Add(
+            new RoomType
+            {
+                Id = Reserve.Core.RoomType.Double,
+                DisplayName = "Double",
+                MaxOccupancy = 2
+            });
+
+        this.Context.SaveChanges();
     }
 
     public ContextShouldContext GivenRoom(string name)
     {
+        var roomType = this.Context.RoomTypes.First(i => i.Id == Reserve.Core.RoomType.Double);
+        
         var room = new Reserve.Infrastructure.Data.Entities.Room
         {
             Id = Guid.NewGuid(),
             Name = name,
             Start = new DateTime(2021, 01, 01, 0, 0, 0),
-            End = new DateTime(2022, 01, 01, 0, 0, 0)
+            End = new DateTime(2022, 01, 01, 0, 0, 0),
+            RoomType = roomType
         };
 
         this.Context.Rooms.Add(room);
