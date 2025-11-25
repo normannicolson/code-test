@@ -113,7 +113,7 @@ curl -X GET http://localhost:5140/hotels | jq
 Search hotel name 
 
 ```
-curl -i -X GET "http://localhost:5140/hotels/search?name=Grand"
+curl -X GET "http://localhost:5140/hotels/search?name=Grand" | jq
 curl -i -X GET "http://localhost:5140/hotels/search?name=Bristol"
 curl -i -X GET "http://localhost:5140/hotels/search?name=Nothing"
 ```
@@ -169,15 +169,15 @@ curl -X GET "http://localhost:5140/rooms/availability-search?from=2026-06-05T15:
 Get Booking
 
 ```
-curl -i -X GET http://localhost:5140/bookings/2b4161ec-c329-4898-8c7e-3f7234ab9ec9
+curl -X GET http://localhost:5140/bookings/2b4161ec-c329-4898-8c7e-3f7234ab9ec9 | jq
 ```
 
 get new booking 
 
 ```
-id="f2dc019f-26f3-4b1e-a73f-f690684b9ab0"
+id=297067ad-047a-496e-86c4-920577e4aa7c
 
-curl -i -X GET "http://localhost:5140/bookings/$id"
+curl -X GET "http://localhost:5140/bookings/$id" | jq
 ```
 
 Open API Swagger APIs 
